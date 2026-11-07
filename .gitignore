@@ -1,0 +1,5 @@
+.claude/
+src/test.html
+src/seed.json
+src/seedrows/
+node_modules/
