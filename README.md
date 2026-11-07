@@ -2,7 +2,9 @@
 
 A working demo of EQORE Vault: a document system for commercial battery energy storage projects. Every project is organized into document packets (permits, fire marshal, utility interconnection, construction, commissioning, warranty, operations). The Vault holds a submission until every document is in and reviewed.
 
-Live demo (Claude artifact): https://claude.ai/artifact/8sWS9pjCJLCsPov2RHU9kh
+**Public demo:** https://manasgogula-lang.github.io/eqore-vault-demo/ (opens in any browser; changes are saved in your own browser, and the AI review is off)
+
+Full version on Claude, with shared saved data, file storage and live AI review (team access only): https://claude.ai/artifact/8sWS9pjCJLCsPov2RHU9kh
 
 ## What works
 
@@ -22,7 +24,8 @@ A single HTML page with no build framework. It uses [lit-html](https://lit.dev) 
 - `src/app.html`: the page (styles, UI and logic)
 - `src/seed.js`: demo projects, the standard packet set and packet templates
 - `src/build.mjs`: inlines `seed.js` into the page and writes `eqore-vault.html`
-- `eqore-vault.html`: the built page that gets published
+- `eqore-vault.html`: the built page that gets published on Claude
+- `docs/index.html`: the same page as a standalone file, served by GitHub Pages
 
 ```bash
 node src/build.mjs

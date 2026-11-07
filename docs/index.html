@@ -1,0 +1,1478 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>EQORE Vault</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: navy app bar, then a centered 1360px work area; project view = packet list left, packet detail right, stacking at phone width */
+:root {
+  --bg: #F3F4F7; --surface: #FFFFFF; --surface-2: #F8F9FB; --line: #E3E6EB; --line-2: #EEF0F3; --field: #D5D9E0;
+  --fg: #111827; --fg-2: #374151; --muted: #5B6472; --faint: #9AA3AF;
+  --accent: #1D4ED8; --accent-strong: #1E3A8A; --accent-soft: #F3F6FD; --accent-line: #D6E0F5; --on-accent: #FFFFFF;
+  --bar: #0F1B2D; --bar-fg: #FFFFFF; --bar-muted: #B8C4D6; --bar-chip: #2A3B55; --bar-icon: #7FB2FF;
+  --track: #E9ECF1; --highlight: #FFF1B8; --erp-row: #FFFBF3; --scrim: rgba(15,27,45,0.6); --paper-bg: #E9ECF1; --paper: #FFFFFF;
+  --bad-bg: #FDECEA; --bad-fg: #9F1C12; --bad-soft: #FDF3F2; --bad-line: #F5C9C4; --bad-dot: #DC2626; --bad-strong: #B42318;
+  --warn-bg: #FFF4E5; --warn-fg: #8A4200; --warn-soft: #FFFAF2; --warn-line: #F2C48D; --warn-dot: #D97706; --warn-strong: #B45309;
+  --ok-bg: #EAF6EE; --ok-fg: #166534; --ok-soft: #F1F8F3; --ok-line: #CDE9D5; --ok-dot: #15803D;
+  --teal-bg: #E6F6F4; --teal-fg: #0F766E; --teal-soft: #F0FAF8; --teal-line: #BFE6E0;
+  --violet-bg: #F3EEFD; --violet-fg: #5B21B6; --violet-soft: #F7F3FE; --violet-line: #DDD0F7;
+  --idle-bg: #F1F3F6; --idle-fg: #4B5563;
+  --denied-bg: #B42318; --denied-fg: #FFFFFF;
+  --display: 'Space Grotesk', Inter, system-ui, sans-serif; --body: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; --serif: Georgia, 'Times New Roman', serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0D131D; --surface: #151D2A; --surface-2: #1A2333; --line: #2A3546; --line-2: #222C3C; --field: #36445A;
+  --fg: #E8ECF2; --fg-2: #C9D1DD; --muted: #9AA6B8; --faint: #6B7789;
+  --accent: #7AA2FF; --accent-strong: #A9C2FF; --accent-soft: #1B2A47; --accent-line: #2E4470; --on-accent: #0B1220;
+  --bar: #080D16; --bar-fg: #FFFFFF; --bar-muted: #A7B3C6; --bar-chip: #24324A; --bar-icon: #7FB2FF;
+  --track: #263142; --highlight: #5A4A12; --erp-row: #221D12; --scrim: rgba(3,6,12,0.72); --paper-bg: #0F1622; --paper: #F5F5F2;
+  --bad-bg: #3A1716; --bad-fg: #FFB4AA; --bad-soft: #2A1514; --bad-line: #5C2622; --bad-dot: #F26B5B; --bad-strong: #FF8A7A;
+  --warn-bg: #3A2A12; --warn-fg: #FFC98A; --warn-soft: #2A2012; --warn-line: #5C4322; --warn-dot: #F2A33A; --warn-strong: #FFB561;
+  --ok-bg: #12301E; --ok-fg: #8EE0A8; --ok-soft: #102419; --ok-line: #1F4A2E; --ok-dot: #4ADE80;
+  --teal-bg: #0F2F2C; --teal-fg: #7EE0D3; --teal-soft: #0E2523; --teal-line: #1D4A45;
+  --violet-bg: #2A1F45; --violet-fg: #C9B5FF; --violet-soft: #221A38; --violet-line: #3E2F66;
+  --idle-bg: #232C3A; --idle-fg: #B3BDCB;
+  --denied-bg: #D9473A; --denied-fg: #FFFFFF;
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #0D131D; --surface: #151D2A; --surface-2: #1A2333; --line: #2A3546; --line-2: #222C3C; --field: #36445A;
+  --fg: #E8ECF2; --fg-2: #C9D1DD; --muted: #9AA6B8; --faint: #6B7789;
+  --accent: #7AA2FF; --accent-strong: #A9C2FF; --accent-soft: #1B2A47; --accent-line: #2E4470; --on-accent: #0B1220;
+  --bar: #080D16; --bar-fg: #FFFFFF; --bar-muted: #A7B3C6; --bar-chip: #24324A; --bar-icon: #7FB2FF;
+  --track: #263142; --highlight: #5A4A12; --erp-row: #221D12; --scrim: rgba(3,6,12,0.72); --paper-bg: #0F1622; --paper: #F5F5F2;
+  --bad-bg: #3A1716; --bad-fg: #FFB4AA; --bad-soft: #2A1514; --bad-line: #5C2622; --bad-dot: #F26B5B; --bad-strong: #FF8A7A;
+  --warn-bg: #3A2A12; --warn-fg: #FFC98A; --warn-soft: #2A2012; --warn-line: #5C4322; --warn-dot: #F2A33A; --warn-strong: #FFB561;
+  --ok-bg: #12301E; --ok-fg: #8EE0A8; --ok-soft: #102419; --ok-line: #1F4A2E; --ok-dot: #4ADE80;
+  --teal-bg: #0F2F2C; --teal-fg: #7EE0D3; --teal-soft: #0E2523; --teal-line: #1D4A45;
+  --violet-bg: #2A1F45; --violet-fg: #C9B5FF; --violet-soft: #221A38; --violet-line: #3E2F66;
+  --idle-bg: #232C3A; --idle-fg: #B3BDCB;
+  --denied-bg: #D9473A; --denied-fg: #FFFFFF;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.45 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bar); }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+a { color: var(--accent); }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1360px; margin: 0 auto; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.col { display: flex; flex-direction: column; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* App bar */
+.appbar { background: var(--bar); color: var(--bar-fg); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; }
+.appbar .wrap { min-height: 60px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-block: 8px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 700 19px var(--display); color: var(--bar-fg); text-decoration: none; }
+.crumbs { display: flex; align-items: center; gap: 8px; color: var(--bar-muted); font-weight: 600; min-width: 0; }
+.crumbs a { color: var(--bar-muted); text-decoration: none; }
+.crumbs a:hover { color: var(--bar-fg); }
+.crumbs .here { color: var(--bar-fg); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.who { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--bar-muted); }
+.avatar { width: 30px; height: 30px; border-radius: 999px; background: var(--bar-chip); color: var(--bar-fg); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; flex: none; }
+.modechip { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: var(--bar-chip); color: var(--bar-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+main.wrap { padding-block: 24px 48px; display: flex; flex-direction: column; gap: 20px; }
+
+/* Buttons */
+.btn { min-height: 42px; padding: 0 16px; border-radius: 8px; border: 1px solid var(--field); background: var(--surface); color: var(--fg-2); font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+.btn:hover:not(:disabled) { border-color: var(--faint); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover:not(:disabled) { background: var(--accent-strong); border-color: var(--accent-strong); }
+.btn.outline { border-color: var(--accent); color: var(--accent); }
+.btn.danger { border-color: var(--bad-fg); color: var(--bad-fg); }
+.btn.teal { background: var(--teal-fg); border-color: var(--teal-fg); color: var(--surface); }
+.btn.sm { min-height: 34px; padding: 0 12px; font-size: 13px; }
+.btn.xs { min-height: 30px; padding: 0 10px; font-size: 12px; border-radius: 6px; }
+.btn.dashed { border-style: dashed; border-color: var(--faint); }
+.btn.pillbtn { border-radius: 999px; }
+.btn:disabled { background: var(--idle-bg); color: var(--faint); border-color: var(--line); }
+.btn.grow { flex: 1 1 200px; }
+.iconbtn { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--field); background: var(--surface); display: inline-flex; align-items: center; justify-content: center; color: var(--fg-2); flex: none; }
+
+/* Cards & pills */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.pill.lg { padding: 8px 14px; font-size: 14px; }
+.t-missing, .tone-bad { background: var(--bad-bg); color: var(--bad-fg); }
+.t-action, .tone-mid { background: var(--warn-bg); color: var(--warn-fg); }
+.t-changes { background: var(--violet-bg); color: var(--violet-fg); }
+.t-ready, .tone-teal { background: var(--teal-bg); color: var(--teal-fg); }
+.t-submitted, .tone-blue { background: var(--accent-soft); color: var(--accent); }
+.t-approved, .tone-ok { background: var(--ok-bg); color: var(--ok-fg); }
+.t-denied { background: var(--denied-bg); color: var(--denied-fg); }
+.t-notdue, .tone-idle { background: var(--idle-bg); color: var(--idle-fg); }
+.dim { opacity: 0.45; }
+.dot { width: 10px; height: 10px; border-radius: 999px; flex: none; display: inline-block; }
+.eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.bar { height: 6px; border-radius: 999px; background: var(--track); overflow: hidden; flex: 1; min-width: 40px; }
+.bar > span { display: block; height: 100%; background: var(--accent); }
+
+/* Portfolio */
+.head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
+.kpi .v { font: 700 32px var(--display); font-variant-numeric: tabular-nums; }
+.kpi .l { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.scrollbox { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+.ptable { min-width: 1000px; }
+.prow { display: grid; grid-template-columns: 2.2fr 1.3fr 1.6fr 2fr 2.2fr; gap: 12px; padding: 14px 16px; border-top: 1px solid var(--line-2); align-items: center; }
+.prow.hd { background: var(--surface-2); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-top: 0; padding-block: 12px; }
+.prow .pname { font-weight: 600; text-decoration: none; font-size: 15px; }
+.attn-bad { color: var(--bad-fg); font-weight: 600; } .attn-warn { color: var(--warn-fg); font-weight: 600; } .attn-ok { color: var(--muted); }
+
+/* Project header */
+.lifecycle { display: grid; grid-template-columns: repeat(auto-fit, minmax(124px, 1fr)); gap: 8px; }
+.phase { display: flex; flex-direction: column; gap: 4px; padding: 12px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); text-align: left; color: var(--fg); }
+.phase.cur { border: 2px solid var(--accent); padding: 11px; }
+.phase:hover { border-color: var(--faint); }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); font-size: 13px; }
+.flag-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; font-weight: 600; }
+.facts textarea { min-height: 150px; }
+details > summary { cursor: pointer; font-weight: 600; color: var(--fg-2); list-style: none; display: flex; align-items: center; gap: 8px; min-height: 36px; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] > summary .caret { transform: rotate(90deg); }
+
+/* Body: packets + detail */
+.split { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+.packets { flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.detail { flex: 2 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.group { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 40px; padding: 6px 4px; border: 0; border-bottom: 1px solid var(--line); background: transparent; text-align: left; }
+.group .caret, .caret { transition: transform 0.15s; flex: none; }
+.group.open .caret { transform: rotate(90deg); }
+.pk { display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 12px; background: var(--surface); border: 2px solid var(--line); text-align: left; color: var(--fg); width: 100%; }
+.pk.on { background: var(--accent-soft); border-color: var(--accent); }
+.pk:hover:not(.on) { border-color: var(--faint); }
+.gate { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border-radius: 12px; border: 1px solid; }
+.g-bad { background: var(--bad-soft); border-color: var(--bad-line); color: var(--bad-fg); }
+.g-ok { background: var(--ok-soft); border-color: var(--ok-line); color: var(--ok-fg); }
+.g-blue { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent-strong); }
+.g-teal { background: var(--teal-soft); border-color: var(--teal-line); color: var(--teal-fg); }
+.g-idle { background: var(--surface-2); border-color: var(--line); color: var(--fg-2); }
+.g-warn { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn-fg); }
+.g-violet { background: var(--violet-soft); border-color: var(--violet-line); color: var(--violet-fg); }
+.sentmsg { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--ok-fg); }
+.dtable { min-width: 720px; }
+.drow { display: grid; grid-template-columns: 2.6fr 1.3fr 1.25fr 1.4fr; gap: 12px; padding: 10px 14px; border-top: 1px solid var(--line-2); align-items: center; background: var(--surface); }
+.drow.hd { background: var(--surface-2); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-top: 0; }
+.drow.hl { background: var(--erp-row); }
+.linkish { padding: 0; border: 0; background: transparent; text-align: left; color: inherit; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.linkish .nm { font-weight: 500; color: var(--accent); }
+.note-bad { color: var(--bad-fg); } .note-warn { color: var(--warn-fg); } .note-ok { color: var(--muted); }
+select.owner { width: 100%; min-height: 36px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); }
+select.owner.re { border-color: var(--accent); background: var(--accent-soft); }
+.field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--fg-2); min-width: 0; }
+.field input, .field select, .field textarea, textarea.inp { min-height: 42px; padding: 0 12px; border: 1px solid var(--field); border-radius: 8px; background: var(--surface); font-weight: 400; width: 100%; }
+.field textarea, textarea.inp { padding: 10px 12px; line-height: 1.5; resize: vertical; }
+.formbox { display: flex; flex-direction: column; gap: 12px; padding: 14px; border-radius: 10px; border: 2px solid var(--accent); background: var(--accent-soft); }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.activity { display: flex; flex-direction: column; gap: 10px; }
+.activity .it { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; }
+.activity .it .dot { margin-top: 5px; }
+
+/* Modals */
+.scrim { position: fixed; inset: 0; background: var(--scrim); display: flex; align-items: flex-start; justify-content: center; padding: calc(28px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) 28px max(12px, env(safe-area-inset-left, 0px)); overflow-y: auto; z-index: 50; }
+.dialog { width: 100%; max-width: 760px; background: var(--surface); border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.3); }
+.dialog.wide { max-width: 1200px; }
+.dialog.narrow { max-width: 520px; }
+.dhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+.dbody { padding: 18px 20px; display: flex; flex-direction: column; gap: 16px; }
+.dfoot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--line); background: var(--surface-2); }
+.viewer { display: flex; flex-wrap: wrap; align-items: stretch; }
+.preview { flex: 3 1 520px; min-width: 0; background: var(--paper-bg); padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.paper { width: 100%; max-width: 640px; background: var(--paper); color: #1F2937; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.12); padding: 36px 40px; font-family: var(--serif); font-size: 14px; line-height: 1.6; display: flex; flex-direction: column; gap: 2px; }
+.paper .ln { padding: 1px 6px; border-radius: 4px; display: flex; gap: 8px; align-items: flex-start; white-space: pre-wrap; overflow-wrap: anywhere; }
+.paper .ln.h { font: 700 15px var(--body); margin-top: 12px; }
+.paper .ln.t { font-size: 20px; font-weight: 700; margin-top: 0; }
+.paper .ln.flagged { background: #FFF1B8; }
+.paper .ln .b { flex: none; margin-left: auto; }
+.badge { width: 22px; height: 22px; border-radius: 999px; color: #FFFFFF; font: 700 12px var(--body); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.badge.high { background: #B42318; } .badge.medium { background: #B45309; } .badge.low { background: #4B5563; } .badge.off { background: #9AA3AF; }
+.pdfpages { display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center; }
+.pdfpages canvas { width: 100%; max-width: 640px; height: auto; background: #FFFFFF; box-shadow: 0 2px 10px rgba(0,0,0,0.12); border-radius: 4px; }
+.preview img.doc { max-width: 100%; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.12); background: #FFFFFF; }
+.empty { width: 100%; max-width: 640px; min-height: 320px; border: 2px dashed var(--field); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 28px; text-align: center; color: var(--muted); background: var(--surface); }
+.empty.drag { border-color: var(--accent); background: var(--accent-soft); }
+.panel { flex: 2 1 360px; min-width: 0; padding: 20px; display: flex; flex-direction: column; gap: 14px; border-left: 1px solid var(--line); }
+.flag { display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 10px; border: 1px solid; }
+.flag.high { background: var(--bad-soft); border-color: var(--bad-line); }
+.flag.medium, .flag.low { background: var(--warn-soft); border-color: var(--warn-line); }
+.flag.off { background: var(--surface-2); border-color: var(--line); }
+.sev-high { color: var(--bad-fg); } .sev-medium, .sev-low { color: var(--warn-fg); }
+.passed { display: flex; gap: 8px; font-size: 13px; color: var(--ok-fg); align-items: flex-start; }
+.thinking { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 10px; background: var(--accent-soft); color: var(--accent-strong); font-size: 13px; font-weight: 600; }
+.spin { width: 16px; height: 16px; border-radius: 999px; border: 2px solid var(--accent-line); border-top-color: var(--accent); animation: spin 0.8s linear infinite; flex: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation-duration: 3s; } .caret { transition: none; } }
+.hist { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+.email { display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+.email .meta { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 8px 10px; align-items: center; }
+.email .meta span { overflow-wrap: anywhere; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--bar); color: var(--bar-fg); padding: 12px 16px; border-radius: 10px; font-weight: 600; z-index: 90; box-shadow: 0 10px 30px rgba(0,0,0,0.25); max-width: calc(100% - 32px); }
+.banner { padding: 10px 14px; border-radius: 10px; font-size: 13px; background: var(--warn-soft); border: 1px solid var(--warn-line); color: var(--warn-fg); }
+.tpl { min-height: 34px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--field); background: var(--surface-2); color: var(--fg-2); font-weight: 600; font-size: 12px; }
+.tpl.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.checks { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow: auto; padding: 4px; }
+.checks label { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; }
+footer.wrap { padding-block: 0 32px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; color: var(--muted); font-size: 12px; }
+.loading { padding: 60px 0; text-align: center; color: var(--muted); }
+@media (max-width: 640px) { .panel { border-left: 0; border-top: 1px solid var(--line); } .paper { padding: 24px 20px; } .preview { padding: 16px; } }
+</style>
+
+<div id="app"><div class="loading">Opening EQORE Vault…</div></div>
+
+<script type="module">
+import { html, render, nothing } from 'https://cdn.jsdelivr.net/npm/lit-html@3.1.4/lit-html.js';
+
+// ---------- Demo data and templates (inlined into the page by build.mjs) ----------
+const PHASES = ['Pre-planning', 'Permitting', 'Interconnection', 'Construction', 'Commissioning', 'Operations'];
+const OWNER_DEFAULTS = ['Granite EPC', 'Engineer of record', 'EQORE', 'Customer', 'Utility'];
+
+// Standard packet set every new project starts with: [name, phase, kind, to, owner, blurb, docs[[name, ref, owner]]]
+const STANDARD_PACKETS = [
+  ['Site assessment & design', 'Pre-planning', 'Internal packet', 'EQORE engineering', 'EQORE', 'Site data, sizing and the stamped plan set.', [
+    ['Site information packet', 'Pole, transformer, MDP & meter photos', 'EQORE'],
+    ['Aerial map & site survey', 'Property & setbacks', 'EQORE'],
+    ['12 months of utility bills & interval data', 'From customer', 'Customer'],
+    ['Load analysis & battery sizing', 'Savings model', 'EQORE'],
+    ['Signed customer agreement', 'Executed', 'Customer'],
+    ['Equipment selection & spec sheets', 'Battery, inverters, transformer', 'EQORE'],
+    ['Engineered plan set', 'Stamped', 'Engineer of record']]],
+  ['Building & electrical permit', 'Permitting', 'AHJ submission', 'Town Building Dept', 'Granite EPC', 'Building and electrical permits from the town.', [
+    ['Building permit application', 'Town form', 'Granite EPC'],
+    ['Electrical permit application', 'Town form', 'Granite EPC'],
+    ['Stamped plan set', 'All sheets', 'Engineer of record'],
+    ['Structural calcs: slab, beams, anchors, welds', 'ESS-6.3 – 6.4, 12.0', 'Engineer of record'],
+    ['Electrical calculations', 'ESS-15.0', 'Engineer of record'],
+    ['Site plan with setbacks', 'ESS-1.0', 'Engineer of record'],
+    ['Equipment spec sheets', 'ESS-14', 'EQORE'],
+    ['UL 9540 / UL 1741 SB listings', 'OEM certificates', 'EQORE'],
+    ['Electrician license', 'State license', 'Granite EPC'],
+    ['Certificate of insurance', 'Contractor', 'Granite EPC'],
+    ['Owner authorization letter', 'Signed', 'Customer']]],
+  ['Fire marshal (NFPA 855)', 'Permitting', 'AHJ submission', 'Town Fire Prevention', 'Granite EPC', 'Fire department review of the battery system under NFPA 855.', [
+    ['Fire permit application', 'Town form', 'Granite EPC'],
+    ['Stamped site plan with setbacks', 'ESS-1.0', 'Engineer of record'],
+    ['NFPA 855 compliance summary', 'ESS-20.0', 'Engineer of record'],
+    ['UL 9540 system listing', 'OEM certificate', 'EQORE'],
+    ['UL 9540A fire test report', 'OEM report', 'EQORE'],
+    ['Fire suppression design & data sheets', 'ESS-19.0', 'Engineer of record'],
+    ['LFP battery safety data sheet', 'OEM', 'EQORE'],
+    ['Hazard signage plan', 'ESS-18.0', 'Engineer of record'],
+    ['Fire department access plan', 'Site plan markup', 'Granite EPC'],
+    ['Emergency response plan', 'Required by fire marshal', 'Granite EPC'],
+    ['Hazard mitigation analysis', 'If required by AHJ', 'Engineer of record']]],
+  ['Utility interconnection', 'Interconnection', 'Utility submission', 'Utility', 'EQORE', 'Application, studies and permission to operate from the utility.', [
+    ['Interconnection application', 'Utility portal', 'EQORE'],
+    ['One-line diagram', 'ESS-13.0', 'Engineer of record'],
+    ['Site plan', 'ESS-1.0', 'Engineer of record'],
+    ['Inverter UL 1741 SB certificate', 'OEM', 'EQORE'],
+    ['Export control description', 'Engineer letter', 'Engineer of record'],
+    ['Protection & relay settings', 'Settings file', 'Engineer of record'],
+    ['Signed interconnection agreement', 'Executed', 'EQORE'],
+    ['Approval to construct', 'Utility letter', 'Utility'],
+    ['Witness test record', 'After town final', 'Utility'],
+    ['Permission to operate letter', 'Utility letter', 'Utility']]],
+  ['Construction & inspections', 'Construction', 'Inspection packet', 'Town inspector', 'Granite EPC', 'Field records collected as work happens.', [
+    ['Notice to proceed', 'Signed', 'EQORE'],
+    ['Dig Safe ticket', 'Ticket number', 'Granite EPC'],
+    ['Pad post-pour structural inspection', 'Inspector report', 'Granite EPC'],
+    ['Concrete batch tickets', '3,500 psi', 'Granite EPC'],
+    ['Weld photos & welder certification', 'ESS-6.4 · AWS D1.1', 'Granite EPC'],
+    ['Trench depth photos (≥ 24 in)', 'ESS-5.0', 'Granite EPC'],
+    ['Construction photo log', 'By stage', 'Granite EPC'],
+    ['Field redlines', 'Changes to plan set', 'Granite EPC'],
+    ['Change order log', 'Signed changes', 'EQORE'],
+    ['Rough electrical inspection', 'Town inspector', 'Granite EPC'],
+    ['Final electrical inspection sign-off', 'Town inspector', 'Town inspector'],
+    ['As-built drawings', 'Updated plan set', 'Engineer of record']]],
+  ['Commissioning & energization', 'Commissioning', 'Internal + utility', 'EQORE engineering, Utility', 'EQORE', 'Energization can’t be recorded until every test is filed.', [
+    ['Commissioning plan', 'Procedure', 'EQORE'],
+    ['Pre-energization checklist', 'Signed', 'Granite EPC'],
+    ['Insulation & continuity test results', 'Test report', 'Granite EPC'],
+    ['Inverter & battery startup report', 'OEM procedure', 'EQORE'],
+    ['Fire suppression & annunciation test', 'OEM procedure', 'EQORE'],
+    ['Charge / discharge functional test', 'Test report', 'EQORE'],
+    ['Energization record', 'Date & sign-off', 'EQORE'],
+    ['Customer training & handoff sign-off', 'Signed', 'Customer']]],
+  ['Maintenance & warranty', 'Operations', 'Warranty file', 'Battery & inverter manufacturers', 'EQORE', 'Keeps the warranty valid: registrations, installer proof and maintenance records.', [
+    ['Equipment serial number register', 'Battery, inverters, transformer', 'Granite EPC'],
+    ['Certified installer proof', 'OEM training cert', 'Granite EPC'],
+    ['Battery warranty registration', 'Due after commissioning', 'EQORE'],
+    ['Inverter warranty registration', 'Due after commissioning', 'EQORE'],
+    ['Commissioning report sent to manufacturer', 'OEM requirement', 'EQORE'],
+    ['Preventive maintenance schedule', 'Per OEM manual', 'EQORE'],
+    ['Thermal / HVAC service logs', 'Each service', 'EQORE'],
+    ['Annual inspection report', 'Yearly', 'EQORE'],
+    ['Firmware update log', 'Each update', 'EQORE']]],
+  ['Operations & performance', 'Operations', 'Lifetime records', 'EQORE, Customer', 'EQORE', 'Recurring records for the life of the system.', [
+    ['Monthly performance report', 'Monthly', 'EQORE'],
+    ['Battery state-of-health trend', 'Monthly', 'EQORE'],
+    ['Annual capacity test', 'Yearly', 'EQORE'],
+    ['Availability & downtime log', 'Continuous', 'EQORE'],
+    ['Alarm & incident log', 'As needed', 'EQORE'],
+    ['Customer savings report', 'Quarterly', 'EQORE'],
+    ['Decommissioning plan', 'End of life', 'EQORE']]]
+];
+
+// Starting points for a custom packet
+const PACKET_TEMPLATES = {
+  'Blank': [],
+  'Incentive program': [['Program application', 'Program form', 'EQORE'], ['Interconnection approval', 'Utility letter', 'Utility'], ['Equipment invoices', 'Paid invoices', 'Granite EPC'], ['Commissioning report', 'Signed', 'EQORE'], ['W-9', 'Customer', 'Customer']],
+  'Insurance & safety': [['Certificate of insurance', 'Contractor', 'Granite EPC'], ['Site safety plan', 'OSHA', 'Granite EPC'], ['Arc flash study', 'Engineer report', 'Engineer of record'], ['Owner’s builder’s risk policy', 'Policy', 'Customer']],
+  'Customer handoff': [['Operations & maintenance manual', 'OEM', 'EQORE'], ['As-built drawings', 'Final', 'Engineer of record'], ['Warranty certificates', 'Battery & inverters', 'EQORE'], ['Training sign-off', 'Signed', 'Customer']],
+  'Decommissioning': [['Decommissioning plan', 'End of life', 'EQORE'], ['Battery recycling agreement', 'Recycler', 'EQORE'], ['Site restoration sign-off', 'Owner', 'Customer']]
+};
+
+const ERP_TEXT = `Emergency Response Plan – Battery Energy Storage System
+MIT Dome Building · 77 Massachusetts Avenue, Cambridge, MA · Prepared by Granite EPC · Rev 0
+
+1. System description
+250 kW / 760 kWh lithium iron phosphate (LFP) battery energy storage system.
+Equipment: 1 × Gotion EDGE760 battery enclosure, 2 × Dynapower MPS125 inverters and a 500 kVA isolation transformer on an exterior concrete pad across the private driveway from the main building.
+
+2. Emergency contacts
+Facility manager: [NAME] · [PHONE]
+EQORE 24/7 monitoring: [PHONE]
+Granite EPC on-call: [PHONE]
+Fire department: 911
+
+3. Emergency shutdown
+1. Open the 400 A battery system disconnect on the pad (primary means of disconnect).
+2. Open the 600 A battery system breaker in the main distribution panel, electrical room.
+3. Call EQORE monitoring to confirm the system is offline.
+
+4. Fire protection
+The battery enclosure includes integrated aerosol fire suppression.
+Fire alarm and annunciation are reported to EQORE monitoring.
+
+5. Fire department response
+Do not open the battery enclosure doors during an event.
+Contact EQORE monitoring for system status before approaching.
+
+6. Site map
+See attached site map for equipment and disconnect locations.
+
+7. Training
+Facility staff will be trained on this plan before energization.`;
+
+const MIT_FACTS = `System: 250 kW / 760 kWh LFP. 1 × Gotion EDGE760 enclosure, 2 × Dynapower MPS125 inverters, 500 kVA isolation transformer on an exterior pad across the private driveway.
+Plan set Rev B (stamped Sep 28).
+ESS-1.0 site plan: setbacks, both disconnect locations, fire department access path.
+ESS-4.1 and ESS-6.2: 400 A battery system breaker. ESS-13.0 one-line shows 600 A (conflict, open with engineer of record).
+ESS-13.0: primary disconnect on the pad. Fire suppression = aerosol + dry pipe sprinkler + pack immersion.
+ESS-5.0: conduit trench depth ≥ 24 in.
+ESS-18.0 hazard signage. ESS-19.0 fire suppression design. ESS-20.0 NFPA 855 compliance summary.
+Utility export limit revised in relay settings v2 (Oct 27).`;
+
+function buildSeed() {
+  let n = 0;
+  const id = (p) => p + '-' + (++n).toString(36);
+  const at = (s) => s; // dates are stored as display text in seeded notes
+  const doc = (d, extra) => Object.assign({ id: id('d'), name: d[0], ref: d[1], owner: d[2], status: d[3] || 'notdue', note: d[4] || '—', history: [] }, extra || {});
+  const packet = (def, statuses, extra) => {
+    const docs = def[6].map((d, i) => {
+      const s = statuses ? statuses[i] : null;
+      return doc([d[0], s && s[2] ? s[2] : d[1], s && s[3] ? s[3] : d[2], s ? s[0] : 'notdue', s ? s[1] : '—']);
+    });
+    return Object.assign({ id: id('p'), name: def[0], phase: def[1], kind: def[2], to: def[3], owner: def[4], blurb: def[5], docs }, extra || {});
+  };
+  const std = (name) => STANDARD_PACKETS.find((p) => p[0] === name);
+  const partners = (epc, epcContact, epcEmail, customerName) => [
+    { label: 'EQORE', name: 'EQORE', role: 'Owner', contact: 'EQORE Engineering', email: 'engineering@eqore.example' },
+    { label: 'Granite EPC', name: epc, role: 'EPC', contact: epcContact, email: epcEmail },
+    { label: 'Engineer of record', name: 'Ridgeline Engineering', role: 'Engineer of record', contact: 'Priya Nair', email: 'pnair@ridgeline-eng.example' },
+    { label: 'Customer', name: customerName, role: 'Facility', contact: 'Facilities team', email: 'facilities@customer.example' },
+    { label: 'Utility', name: 'Utility', role: 'View only', contact: 'Interconnection desk', email: 'interconnection@utility.example' }
+  ];
+
+  // ---------- MIT Dome Building: the detailed project from the prototype ----------
+  const A = (note) => ['approved', note];
+  const R = (note) => ['ready', note];
+  const mit = {
+    id: 'mitdome', name: 'MIT Dome Building', address: '77 Massachusetts Avenue, Cambridge, MA 02139', size: '250 kW / 760 kWh', epc: 'Granite EPC',
+    facts: MIT_FACTS, stage: 'Construction', partners:partners('Granite EPC', 'Dana Whitfield', 'dwhitfield@granite-epc.example', 'MIT Dome Building'), order: 1,
+    packets: [
+      packet(std('Site assessment & design'), [A('Aug 12'), A('Aug 12'), A('Aug 15'), A('Aug 22'), A('Aug 29'), A('Sep 5'), ['approved', 'Sep 28', 'Stamped, Rev B']], { closed: true, blurb: 'Closed Sep 28 when the plan set was stamped. Kept here for reference.' }),
+      packet(std('Building & electrical permit'), [A('v1 · Oct 2'), A('v1 · Oct 2'), ['approved', 'Rev B · Jan 12', 'All sheets'], A('v2 · Sep 28'), A('v1 · Sep 28'), A('v1 · Sep 28'), A('Sep 20'), A('Sep 20'), A('Exp. 2027'), A('Exp. Jun 2027'), A('Sep 18')], { blurb: 'Approved on first submission. Approval letter and stamped set are filed here.' }),
+      packet(std('Fire marshal (NFPA 855)'), [R('Reviewed by EQORE · Oct 20'), R('Rev B'), R('Rev B'), R('Sep 20'), R('Sep 20'), R('Rev B'), R('Oct 21'), R('Reviewed Oct 22'), R('v2 · reviewed Nov 2'),
+        ['action', 'Uploaded today 9:40 AM · AI found 4 issues'], ['missing', 'Requested Nov 4']],
+        { blurb: 'Granite EPC tried to submit yesterday at 4:12 PM. The Vault held it until every document is in and reviewed.' }),
+      packet(std('Utility interconnection'), [A('Aug 30'), ['approved', 'Rev B'], ['approved', 'Rev B'], A('Aug 30'), A('Sep 4'), ['denied', 'Returned Oct 20: export limit · replaced by v2', 'Settings file v1'], A('Oct 9'), A('Oct 11'), ['notdue', 'Not yet scheduled'], ['notdue', '—']],
+        { blurb: 'The witness test and permission to operate come after the town signs off on the final inspection.' }),
+      packet(std('Construction & inspections'), [A('Oct 23'), R('Oct 24'), A('Passed Nov 3'), R('Oct 27'), R('Reviewed Nov 5'), R('Re-dug to 26 in · reviewed Nov 6'), R('Reviewed through Nov 6'), ['missing', 'None filed yet'], R('1 change'), ['submitted', 'Requested Nov 5'], ['notdue', '—'], ['notdue', '—']],
+        { blurb: 'Final electrical inspection request unlocks when every item is in.' }),
+      packet(std('Commissioning & energization')),
+      packet(std('Maintenance & warranty'), [R('Reviewed Nov 5'), R('Exp. 2027'), null, null, null, null, ['notdue', 'Starts after energization'], ['notdue', 'Starts after energization'], ['notdue', 'Starts after energization']].map((s) => s || ['notdue', '—'])),
+      packet(std('Operations & performance')),
+      { id: id('p'), name: 'Driveway trench & access', phase: 'Construction', kind: 'Custom packet', to: 'Property owner', owner: 'Granite EPC', custom: true,
+        blurb: 'Custom packet added for this site because the conduit crosses a private driveway.',
+        docs: [doc(['Driveway crossing approval', 'Signed by owner', 'Customer', 'approved', 'Oct 15']), doc(['Traffic control plan for loading dock', 'Site sketch', 'Granite EPC', 'missing', 'Due before trenching']), doc(['Driveway restoration sign-off', 'After backfill', 'Customer', 'notdue', '—'])] }
+    ]
+  };
+  // Interconnection: corrected relay settings v2 sits right after the denied v1
+  const ic = mit.packets[3];
+  ic.docs[5].superseded = true;
+  ic.docs[5].name = 'Protection & relay settings v1';
+  ic.docs.splice(6, 0, doc(['Protection & relay settings v2', 'Revised export limit', 'Engineer of record', 'submitted', 'Resubmitted Oct 27']));
+  // Building permit: approval letter on file
+  mit.packets[1].docs.push(doc(['Permit approval letter', 'Issued by town', 'Town Building Dept', 'approved', 'Oct 16'], { letter: true }));
+  // Fire marshal ERP: the uploaded plan with its AI pre-review
+  const erp = mit.packets[2].docs[9];
+  erp.hasText = true;
+  erp.file = { name: 'MIT-Dome-ERP-Rev0.txt', type: 'text/plain', size: ERP_TEXT.length, at: 'Today 9:40 AM', textOnly: true };
+  erp.history = [{ at: 'Today 9:40 AM', text: 'Granite EPC uploaded Rev 0' }];
+  erp.review = {
+    at: 'Today 9:41 AM', model: 'demo',
+    summary: 'Checked against the fire marshal’s emergency planning expectations for battery systems, plan set Rev B, and the other documents in this packet. Found issues the fire marshal is likely to send back.',
+    flags: [
+      { n: 1, severity: 'high', title: 'Emergency contacts are blank', ref: 'Section 2', quote: '[PHONE]', detail: 'All three contacts are placeholders. A plan without working 24/7 phone numbers is likely to be returned by the fire marshal.' },
+      { n: 2, severity: 'high', title: 'Breaker rating doesn’t match the plan set', ref: 'Section 3 · ESS-4.1', quote: '600 A battery system breaker', detail: 'This plan says 600 A. ESS-4.1 and ESS-6.2 specify a 400 A breaker, while ESS-13.0 says 600 A. Confirm with the engineer of record so the plan set and this document agree.' },
+      { n: 3, severity: 'medium', title: 'Fire suppression description is incomplete', ref: 'Section 4 · ESS-13.0', quote: 'integrated aerosol fire suppression', detail: 'Lists aerosol suppression only. ESS-13.0 lists aerosol, a dry pipe sprinkler system and pack immersion. Responders will need to know where the dry pipe connection is.' },
+      { n: 4, severity: 'medium', title: 'Site map is referenced but not attached', ref: 'Section 6 · ESS-1.0', quote: 'See attached site map', detail: 'No attachment was uploaded. Attach the ESS-1.0 site plan with both disconnects and the fire department access path marked.' }
+    ],
+    passed: ['System size, chemistry and equipment match the plan set (ESS-13.0)', 'Primary disconnect location matches ESS-13.0', 'Fire department access plan is already in this packet']
+  };
+  mit.activity = [
+    { at: 'Today 9:41 AM', text: 'AI pre-review of Emergency response plan: 2 high and 2 medium issues flagged for EQORE review.', tone: 'warn' },
+    { at: 'Today 9:40 AM', text: 'Granite EPC uploaded Emergency response plan to Fire marshal (NFPA 855).', tone: 'info' },
+    { at: 'Yesterday 4:12 PM', text: 'Submission to Town Fire Prevention blocked: Emergency response plan and Hazard mitigation analysis not ready.', tone: 'bad' },
+    { at: 'Nov 6', text: 'Trench depth photos reviewed and marked ready after re-dig to 26 in (ESS-5.0 requires 24 in).', tone: 'ok' },
+    { at: 'Oct 11', text: 'Utility issued Approval to construct; filed to Utility interconnection.', tone: 'ok' }
+  ];
+
+  // ---------- The rest of the portfolio, generated from the standard packet set ----------
+  const gen = (meta, phaseIdx, tweak) => {
+    const p = Object.assign({ facts: '', stage: PHASES[phaseIdx], activity: [],partners: partners(meta.epc, 'Project lead', 'pm@' + meta.epc.toLowerCase().replace(/[^a-z]+/g, '-') + '.example', meta.name) }, meta);
+    p.packets = STANDARD_PACKETS.map((def) => {
+      const ph = PHASES.indexOf(def[1]);
+      const st = def[6].map((d, i) => {
+        if (ph < phaseIdx) return ['approved', 'Filed'];
+        if (ph === phaseIdx) return i < Math.ceil(def[6].length * 0.6) ? ['ready', 'Reviewed'] : ['notdue', '—'];
+        return ['notdue', '—'];
+      });
+      return packet(def, st, ph < phaseIdx && ph === 0 ? { closed: true } : {});
+    });
+    tweak(p, (name) => p.packets.find((x) => x.name === name));
+    return p;
+  };
+  const set = (pk, docName, status, note, owner) => { const d = pk.docs.find((x) => x.name === docName); d.status = status; d.note = note; if (owner) d.owner = owner; };
+  const harbor = gen({ id: 'harbor', name: 'Harbor Logistics DC', address: '410 Terminal Street, Charlestown, MA', size: '125 kW / 380 kWh', epc: 'Coastline Electric', order: 2 }, 1, (p, pk) => {
+    const b = pk('Building & electrical permit');
+    b.docs.forEach((d) => { if (d.status === 'notdue') { d.status = 'submitted'; d.note = 'Submitted Oct 28'; } if (d.status === 'ready') { d.status = 'submitted'; d.note = 'Submitted Oct 28'; } });
+    set(b, 'Structural calcs: slab, beams, anchors, welds', 'denied', 'Returned Nov 3: structural calcs not included');
+    p.activity = [{ at: 'Nov 3', text: 'Town Building Dept returned the building permit: structural calcs not included.', tone: 'bad' }];
+  });
+  const merrimack = gen({ id: 'merrimack', name: 'Merrimack Plastics', address: '22 Mill Road, Lowell, MA', size: '250 kW / 500 kWh', epc: 'Granite EPC', order: 3 }, 4, (p, pk) => {
+    const c = pk('Commissioning & energization');
+    set(c, 'Inverter & battery startup report', 'missing', 'Requested from EPC Nov 2', 'Granite EPC');
+    set(c, 'Fire suppression & annunciation test', 'missing', 'Requested Nov 2');
+  });
+  const riverside = gen({ id: 'riverside', name: 'Riverside Cold Chain', address: '9 River Street, Haverhill, MA', size: '250 kW / 760 kWh', epc: 'Valley Power Co.', order: 4 }, 2, (p, pk) => {
+    const u = pk('Utility interconnection');
+    set(u, 'Protection & relay settings', 'missing', 'With engineer of record');
+    set(u, 'Signed interconnection agreement', 'missing', 'Waiting on utility countersignature', 'Utility');
+  });
+  const bay = gen({ id: 'baystate', name: 'Bay State Brewing', address: '300 Canal Street, Lawrence, MA', size: '125 kW / 380 kWh', epc: 'Coastline Electric', order: 5 }, 5, (p, pk) => {
+    const m = pk('Maintenance & warranty');
+    set(m, 'Battery warranty registration', 'missing', 'Due in 5 days');
+    set(m, 'Inverter warranty registration', 'missing', 'Due in 5 days');
+  });
+  const quincy = gen({ id: 'quincy', name: 'Quincy Medical Supply', address: '1 Granite Way, Quincy, MA', size: '250 kW / 500 kWh', epc: 'TBD', order: 6 }, 0, () => {});
+
+  return { projects: [mit, harbor, merrimack, riverside, bay, quincy], texts: { [erp.id]: ERP_TEXT } };
+}
+
+
+// ---------- Small helpers ----------
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const stamp = (d = new Date()) => {
+  const h = d.getHours(), m = String(d.getMinutes()).padStart(2, '0');
+  return MON[d.getMonth()] + ' ' + d.getDate() + ', ' + ((h % 12) || 12) + ':' + m + ' ' + (h < 12 ? 'AM' : 'PM');
+};
+const day = (d = new Date()) => MON[d.getMonth()] + ' ' + d.getDate();
+const uid = (p) => p + Math.random().toString(36).slice(2, 10);
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const plural = (n, w, ws) => n + ' ' + (n === 1 ? w : (ws || w + 's'));
+const joinNames = (a) => a.length > 1 ? a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1] : (a[0] || '');
+
+const DS = {
+  missing: 'Missing', action: 'Action required', changes: 'Changes requested', ready: 'Ready for submission',
+  submitted: 'Submitted for review', approved: 'Approved', denied: 'Denied', notdue: 'Not due yet'
+};
+const ORDER = ['missing', 'action', 'changes', 'ready', 'submitted', 'approved', 'denied', 'notdue'];
+
+const I = {
+  logo: html`<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--bar-icon)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"></rect><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="8" x2="12" y2="6"></line><line x1="16" y1="12" x2="18" y2="12"></line><line x1="12" y1="16" x2="12" y2="18"></line><line x1="8" y1="12" x2="6" y2="12"></line></svg>`,
+  lock: html`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>`,
+  check: html`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
+  caret: html`<svg class="caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg>`,
+  file: html`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>`,
+  close: html`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>`,
+  send: html`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>`,
+  spark: html`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"></path><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"></path></svg>`,
+  upload: html`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>`,
+  clock: html`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>`
+};
+
+// ---------- Status rules (same rules for every packet) ----------
+function packetInfo(pk) {
+  const c = { missing: 0, action: 0, changes: 0, ready: 0, submitted: 0, approved: 0, denied: 0, notdue: 0 };
+  pk.docs.forEach((d) => { if (d.status === 'denied' && d.superseded) return; c[d.status]++; });
+  const counted = ORDER.reduce((s, k) => s + c[k], 0);
+  const open = c.missing + c.action + c.changes + c.denied;
+  const done = pk.docs.filter((d) => ['approved', 'ready', 'submitted'].includes(d.status)).length;
+  let status, tone, gate;
+  if (pk.closed) { status = 'Complete'; tone = 'ok'; gate = 'complete'; }
+  else if (counted === 0) { status = 'No documents yet'; tone = 'idle'; gate = 'empty'; }
+  else if (pk.kicked && c.approved + c.ready + c.submitted + c.action === 0 && c.missing > 0) { status = 'Kicked off · ' + c.missing + ' requested'; tone = 'blue'; gate = 'kickedoff'; }
+  else if (open > 0 && c.notdue === 0) { status = 'Submit blocked'; tone = 'bad'; gate = 'blocked'; }
+  else if (open > 0) { status = 'In progress · ' + (c.missing ? c.missing + ' missing' : c.action ? c.action + ' to review' : c.changes ? c.changes + ' with changes' : c.denied + ' denied'); tone = 'mid'; gate = 'progress'; }
+  else if (c.submitted > 0) { status = 'With ' + pk.to; tone = 'blue'; gate = 'waiting'; }
+  else if (c.approved === counted) { status = 'Approved'; tone = 'ok'; gate = 'approved'; }
+  else if (c.notdue === counted) { status = 'Not started'; tone = 'idle'; gate = 'later'; }
+  else if (c.notdue === 0) { status = 'Ready to submit'; tone = 'teal'; gate = 'ready'; }
+  else { status = 'In progress'; tone = 'mid'; gate = 'progress'; }
+  return { c, status, tone, gate, done, total: pk.docs.length, open };
+}
+const finished = (g) => g === 'complete' || g === 'approved';
+
+function projectSummary(p) {
+  const infos = p.packets.map((pk) => ({ pk, i: packetInfo(pk) }));
+  let due = 0, done = 0;
+  infos.forEach(({ pk }) => pk.docs.forEach((d) => { if (d.status !== 'notdue' && !d.superseded) { due++; if (['approved', 'ready', 'submitted'].includes(d.status)) done++; } }));
+  const blocked = infos.filter((x) => x.i.gate === 'blocked');
+  const denied = []; const missing = []; const review = [];
+  p.packets.forEach((pk) => pk.docs.forEach((d) => {
+    if (d.status === 'denied' && !d.superseded) denied.push({ pk, d });
+    if (d.status === 'missing' || d.status === 'changes') missing.push({ pk, d });
+    if (d.status === 'action') review.push({ pk, d });
+  }));
+  let attn, attnTone;
+  if (blocked.length) { attn = 'Submission blocked: ' + blocked[0].pk.name + ', ' + plural(blocked[0].i.open, 'document') + ' not ready'; attnTone = 'bad'; }
+  else if (denied.length) { attn = 'Returned by ' + denied[0].pk.to + ': ' + denied[0].d.name; attnTone = 'bad'; }
+  else if (review.length) { attn = plural(review.length, 'document') + ' waiting on EQORE review'; attnTone = 'warn'; }
+  else if (missing.length) { attn = 'Waiting on ' + plural(missing.length, 'document') + ' from partners'; attnTone = 'warn'; }
+  else { attn = 'On track'; attnTone = 'ok'; }
+  const nextPk = PHASES.map((ph) => infos.find((x) => x.pk.phase === ph && !finished(x.i.gate) && x.i.gate !== 'later' && x.i.gate !== 'empty')).find(Boolean)
+    || PHASES.map((ph) => infos.find((x) => x.pk.phase === ph && !finished(x.i.gate))).find(Boolean);
+  return { due, done, blocked: blocked.length, denied: denied.length, missing: missing.length, review: review.length, attn, attnTone,
+    next: nextPk ? nextPk.pk.name + ' → ' + nextPk.pk.to : 'Nothing pending' };
+}
+
+// ---------- Platform: storage, files, Claude ----------
+let db = null, assets = null, sample = null, userCap = null, mode = 'loading', myName = '';
+const projects = new Map();
+const textCache = new Map();
+const fileCache = new Map(); // docId -> Blob (this visit)
+let seeding = false;
+
+const LS_KEY = 'eqore-vault-demo-v1';
+const local = {
+  data: null,
+  load() { try { this.data = JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch (e) { this.data = null; } if (!this.data) this.data = { projects: {}, texts: {} }; },
+  persist() { try { localStorage.setItem(LS_KEY, JSON.stringify(this.data)); } catch (e) { /* storage blocked: this visit only */ } }
+};
+const store = {
+  async save(p) {
+    if (db) return db.doc('projects/' + p.id).set(p);
+    local.data.projects[p.id] = p; local.persist();
+  },
+  async remove(id) {
+    if (db) return db.doc('projects/' + id).delete();
+    delete local.data.projects[id]; local.persist();
+  },
+  async getText(id) {
+    if (textCache.has(id)) return textCache.get(id);
+    let t = '';
+    if (db) { const s = await db.doc('texts/' + id).get(); t = s.exists ? String(s.data().text || '') : ''; }
+    else t = local.data.texts[id] || '';
+    textCache.set(id, t); return t;
+  },
+  async setText(id, text) {
+    text = text.slice(0, 120000);
+    textCache.set(id, text);
+    if (db) return db.doc('texts/' + id).set({ text });
+    local.data.texts[id] = text; local.persist();
+  }
+};
+
+async function seedDemo() {
+  if (seeding) return; seeding = true;
+  const s = buildSeed();
+  textCache.clear();
+  try {
+    for (const [id, t] of Object.entries(s.texts)) await store.setText(id, t);
+    for (const p of s.projects) { projects.set(p.id, p); await store.save(p); }
+  } catch (e) { toast('Couldn’t save the demo data. Reload to try again.'); }
+  seeding = false; rerender();
+}
+
+async function boot() {
+  const C = window.claude;
+  const use = (n) => C && C.use ? C.use(n).catch(() => null) : Promise.resolve(null);
+  [db, assets, sample, userCap] = await Promise.all([use('db'), use('assets'), use('sample'), use('user')]);
+  if (userCap) { try { const me = await userCap.me(); myName = (me && me.name) || ''; } catch (e) { /* name unknown */ } }
+  if (db) {
+    mode = 'shared';
+    db.collection('projects').onSnapshot((snap) => {
+      projects.clear();
+      snap.docs.forEach((d) => projects.set(d.id, d.data()));
+      if (snap.empty && !snap.metadata.fromCache) seedDemo();
+      rerender();
+    }, () => { mode = 'offline'; toast('Lost the connection to saved data. Reload the page.'); rerender(); });
+  } else {
+    mode = 'local';
+    local.load();
+    Object.values(local.data.projects).forEach((p) => projects.set(p.id, p));
+    if (!projects.size) await seedDemo();
+  }
+  rerender();
+}
+
+// ---------- UI state ----------
+const ui = {
+  route: '', sel: {}, collapsed: {}, openDoc: null, email: null, newPacket: null, newProject: null, invite: null,
+  addDoc: null, dismissFor: null, dismissText: '', ai: null, submit: null, decision: null, confirm: null, toast: '', drag: false,
+  docAction: null, factsDraft: null
+};
+let toastTimer;
+function toast(msg) { ui.toast = msg; clearTimeout(toastTimer); toastTimer = setTimeout(() => { ui.toast = ''; rerender(); }, 3800); rerender(); }
+
+let raf = 0;
+function rerender() { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; render(App(), document.getElementById('app')); afterRender(); }); }
+
+function readRoute() { ui.route = (location.hash || '').replace(/^#/, ''); ui.openDoc = null; ui.email = null; ui.addDoc = null; rerender(); }
+window.addEventListener('hashchange', readRoute);
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (ui.confirm) ui.confirm = null; else if (ui.email) ui.email = null; else if (ui.submit) ui.submit = null; else if (ui.decision) ui.decision = null;
+  else if (ui.openDoc) ui.openDoc = null; else if (ui.newPacket) ui.newPacket = null; else if (ui.newProject) ui.newProject = null; else if (ui.invite) ui.invite = null; else return;
+  rerender();
+});
+
+function logTo(p, text, tone) { p.activity = [{ at: stamp(), text, tone: tone || 'info' }].concat(p.activity || []).slice(0, 40); }
+async function mutate(pid, fn) {
+  const cur = projects.get(pid); if (!cur) return;
+  const p = clone(cur); fn(p); p.updatedAt = Date.now();
+  projects.set(pid, p); rerender();
+  try { await store.save(p); } catch (e) { toast(e && e.code === 'quota_exceeded' ? 'Storage is full. Remove a project to make room.' : 'Couldn’t save that change. Check your connection and try again.'); }
+}
+const findPk = (p, id) => p.packets.find((x) => x.id === id);
+const findDoc = (pk, id) => pk.docs.find((x) => x.id === id);
+
+// ---------- Files ----------
+const TYPES = { pdf: 'application/pdf', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', gif: 'image/gif', txt: 'text/plain', md: 'text/markdown', csv: 'text/csv', json: 'application/json' };
+const extOf = (n) => (n.split('.').pop() || '').toLowerCase();
+const isImg = (t) => /^image\//.test(t || '');
+const isText = (t) => /^text\/|json/.test(t || '');
+function fileUrl(f) { return f && f.assetId ? '/_blob/' + f.assetId : ''; }
+const objUrls = new Map();
+function localUrl(docId) {
+  const b = fileCache.get(docId); if (!b) return '';
+  const hit = objUrls.get(docId); if (hit && hit.b === b) return hit.u;
+  const u = URL.createObjectURL(b); objUrls.set(docId, { b, u }); return u;
+}
+async function getBlob(doc) {
+  if (fileCache.has(doc.id)) return fileCache.get(doc.id);
+  if (!doc.file || !doc.file.assetId) return null;
+  try { const r = await fetch(fileUrl(doc.file)); if (!r.ok) return null; const b = await r.blob(); fileCache.set(doc.id, b); return b; } catch (e) { return null; }
+}
+const scripts = {};
+function loadScript(src) {
+  if (!scripts[src]) scripts[src] = new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  return scripts[src];
+}
+async function pdfjs() {
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js');
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+  return window.pdfjsLib;
+}
+async function extractText(blob, type) {
+  if (isText(type)) return await blob.text();
+  if (type === 'application/pdf') {
+    const lib = await pdfjs();
+    const pdf = await lib.getDocument({ data: new Uint8Array(await blob.arrayBuffer()) }).promise;
+    const out = [];
+    for (let i = 1; i <= Math.min(pdf.numPages, 40); i++) {
+      const tc = await (await pdf.getPage(i)).getTextContent();
+      let line = '', lastY = null; const lines = [];
+      tc.items.forEach((it) => { const y = it.transform[5]; if (lastY !== null && Math.abs(y - lastY) > 2) { lines.push(line); line = ''; } line += it.str; lastY = y; if (it.hasEOL) { lines.push(line); line = ''; lastY = null; } });
+      if (line) lines.push(line);
+      out.push(lines.join('\n'));
+    }
+    return out.join('\n\n').replace(/\n{3,}/g, '\n\n').trim();
+  }
+  return '';
+}
+const pdfRendered = new Map();
+async function renderPdfInto(doc, el) {
+  const key = doc.id + '|' + (doc.file && (doc.file.assetId || doc.file.at));
+  if (pdfRendered.get(el) === key) return; pdfRendered.set(el, key);
+  el.textContent = 'Loading preview…';
+  try {
+    const blob = await getBlob(doc); if (!blob) throw new Error('nofile');
+    const lib = await pdfjs();
+    const pdf = await lib.getDocument({ data: new Uint8Array(await blob.arrayBuffer()) }).promise;
+    el.textContent = '';
+    for (let i = 1; i <= Math.min(pdf.numPages, 6); i++) {
+      const page = await pdf.getPage(i); const vp = page.getViewport({ scale: 1.5 });
+      const c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height; el.appendChild(c);
+      await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+    }
+    if (pdf.numPages > 6) { const m = document.createElement('div'); m.className = 'small muted'; m.textContent = 'Showing the first 6 of ' + pdf.numPages + ' pages.'; el.appendChild(m); }
+  } catch (e) { el.textContent = 'The preview isn’t available. Use “Open file” to view it.'; }
+}
+function afterRender() { document.querySelectorAll('[data-pdf]').forEach((el) => { const d = currentDoc(); if (d && d.doc.id === el.dataset.pdf) renderPdfInto(d.doc, el); }); }
+
+async function uploadFor(pid, pkId, docId, file) {
+  let type = file.type && Object.values(TYPES).includes(file.type) ? file.type : TYPES[extOf(file.name)];
+  if (!type) { toast('Upload a PDF, image or text file. Save Word or Excel files as PDF first.'); return; }
+  if (file.size > 20 * 1024 * 1024) { toast('That file is over 20 MB. Compress it or split it and try again.'); return; }
+  ui.docAction = 'Uploading ' + file.name + '…'; rerender();
+  let assetId = '';
+  if (assets) {
+    try { const r = await assets.upload(file, { type }); assetId = r.id; }
+    catch (e) {
+      ui.docAction = null;
+      toast(e && e.code === 'too_large' ? 'That file is too large to store.' : e && e.code === 'unsupported_type' ? 'That file type can’t be stored. Try PDF.' : e && e.code === 'quota_or_state' ? 'File storage for this vault is full.' : 'The upload didn’t go through. Try again.');
+      return;
+    }
+  }
+  fileCache.set(docId, file);
+  let text = '';
+  try { text = await extractText(file, type); } catch (e) { text = ''; }
+  await store.setText(docId, text).catch(() => {});
+  const p0 = projects.get(pid); const d0 = findDoc(findPk(p0, pkId), docId);
+  const prev = d0.status;
+  await mutate(pid, (p) => {
+    const pk = findPk(p, pkId); const d = findDoc(pk, docId);
+    const v = (d.history || []).filter((h) => /uploaded/.test(h.text)).length + 1;
+    d.file = { assetId, name: file.name, type, size: file.size, at: stamp(), localOnly: !assetId };
+    d.hasText = !!text;
+    d.status = 'action'; d.note = 'Uploaded ' + stamp() + (v > 1 ? ' · v' + v : '');
+    d.review = null;
+    d.history = [{ at: stamp(), text: d.owner + ' uploaded ' + file.name + (v > 1 ? ' (v' + v + ', replaces the ' + DS[prev].toLowerCase() + ' version)' : '') }].concat(d.history || []);
+    logTo(p, d.owner + ' uploaded ' + d.name + ' to ' + pk.name + '.', 'info');
+  });
+  ui.docAction = null; rerender();
+  if (sample) runReview(pid, pkId, docId);
+}
+
+// ---------- AI pre-review ----------
+const aiCopy = (code) => ({
+  not_granted: 'AI review is turned off for this page. Allow Claude for this page to use it.',
+  sampling_disabled: 'Claude isn’t available for this account.',
+  rate_limited: 'Too many reviews at once. Wait a minute and try again.',
+  session_expired: 'Sign in to Claude again, then retry.',
+  prompt_too_large: 'This document is too long to review in one pass.',
+  invalid_json: 'The review came back in an unexpected format. Try again.',
+  refused: 'Claude declined to review this file.',
+  image_rejected: 'This image couldn’t be read. Try a PNG or JPEG.',
+  images_unavailable: 'Image review isn’t available here. Upload a PDF or text version.'
+}[code] || 'The review didn’t finish. Try again.');
+
+async function runReview(pid, pkId, docId) {
+  if (!sample) { toast('AI review needs Claude. Open this page on claude.ai.'); return; }
+  const p = projects.get(pid); const pk = findPk(p, pkId); const d = findDoc(pk, docId);
+  if (!d.file) return;
+  const ctl = new AbortController();
+  ui.ai = { docId, phase: 'Reading the document…', error: '', ctl }; rerender();
+  let text = '';
+  try { text = await store.getText(docId); } catch (e) { text = ''; }
+  let images;
+  if (isImg(d.file.type)) {
+    const lim = await sample.limits().catch(() => null);
+    const blob = await getBlob(d);
+    if (lim && lim.images && blob) images = [blob];
+  }
+  if (!text && !images) { ui.ai = { docId, error: 'There’s no readable text in this file. Upload a text-based PDF or an image of the page.' }; rerender(); return; }
+  const others = pk.docs.filter((x) => x.id !== d.id).map((x) => '- ' + x.name + ' (' + x.ref + ') — ' + DS[x.status]).join('\n');
+  const prompt = `You are pre-reviewing a document uploaded to EQORE Vault, the document system for a commercial battery energy storage project, before an EQORE reviewer sends it to ${pk.to}.
+
+PROJECT: ${p.name}, ${p.address}. System: ${p.size}. EPC: ${p.epc}.
+FACTS FROM THE STAMPED PLAN SET AND PROJECT RECORDS (treat as the source of truth):
+${p.facts || '(none recorded)'}
+
+PACKET: ${pk.name} (${pk.kind}), submitted to ${pk.to}.
+Other documents in this packet and their status:
+${others || '(none)'}
+
+DOCUMENT UNDER REVIEW: ${d.name} (${d.ref}), prepared by ${d.owner}. File: ${d.file.name}.
+
+Find the issues ${pk.to} is most likely to send back: blanks or placeholders, contradictions with the facts above, missing attachments or sections the document itself references, wrong sheet references, missing signatures or stamps, and requirements that are clearly unmet for this kind of document. Do not invent facts about the project or cite code sections you are not sure of. If something can't be judged from the text, leave it out. At most 6 flags, most serious first.
+
+Reply with only JSON in this shape:
+{"summary": "1-2 plain sentences on what you checked and the overall result",
+ "flags": [{"severity": "high" | "medium" | "low", "title": "short headline, under 10 words", "detail": "1-3 sentences: what's wrong and how to fix it", "ref": "section or sheet, e.g. Section 3 · ESS-4.1", "quote": "an exact short excerpt (under 60 characters) copied from the document where the issue appears, or empty"}],
+ "passed": ["up to 4 short checks the document passed"]}
+` + (text ? '\nDOCUMENT TEXT:\n"""\n' + text.slice(0, 40000) + '\n"""' : '\nThe document is the attached image.');
+  try {
+    const opts = { signal: ctl.signal };
+    if (images) opts.images = images;
+    const res = await sample.json(prompt, Object.assign(opts, { onText:() => { if (ui.ai && ui.ai.docId === docId && ui.ai.phase !== 'Writing up the findings…') { ui.ai.phase = 'Writing up the findings…'; rerender(); } } }));
+    const flags = (Array.isArray(res && res.flags) ? res.flags : []).slice(0, 8).map((f, i) => ({
+      n: i + 1, severity: ['high', 'medium', 'low'].includes(String(f.severity).toLowerCase()) ? String(f.severity).toLowerCase() : 'medium',
+      title: String(f.title || 'Issue').slice(0, 120), detail: String(f.detail || '').slice(0, 600), ref: String(f.ref || '').slice(0, 80), quote: String(f.quote || '').slice(0, 120)
+    }));
+    const passed = (Array.isArray(res && res.passed) ? res.passed : []).slice(0, 4).map((x) => String(x).slice(0, 160));
+    const nHigh = flags.filter((f) => f.severity === 'high').length;
+    ui.ai = null;
+    await mutate(pid, (pp) => {
+      const dd = findDoc(findPk(pp, pkId), docId);
+      dd.review = { at: stamp(), summary: String((res && res.summary) || '').slice(0, 600), flags, passed };
+      if (dd.status === 'action') dd.note = 'Uploaded ' + (dd.file ? dd.file.at : '') + ' · AI found ' + plural(flags.length, 'issue');
+      dd.history = [{ at: stamp(), text: 'AI pre-review: ' + (flags.length ? plural(flags.length, 'issue') + ' flagged (' + nHigh + ' high)' : 'no issues found') }].concat(dd.history || []);
+      logTo(pp, 'AI pre-review of ' + dd.name + ': ' + (flags.length ? plural(flags.length, 'issue') + ' flagged for EQORE review.' : 'no issues found.'), flags.length ? 'warn' : 'ok');
+    });
+  } catch (e) {
+    if (e && e.code === 'cancelled') { ui.ai = null; rerender(); return; }
+    if (e && ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(e.code)) sample = null;
+    ui.ai = { docId, error: aiCopy(e && e.code) }; rerender();
+  }
+}
+
+// ---------- Email drafts ----------
+function contactFor(p, owner) {
+  const pt = (p.partners || []).find((x) => x.label === owner || x.name === owner);
+  if (!pt) return { first: 'team', to: owner, email: '' };
+  const first = /team|desk|engineering/i.test(pt.contact) ? 'team' : pt.contact.split(' ')[0];
+  return { first, to: pt.contact + ', ' + pt.name + (pt.email ? ' <' + pt.email + '>' : ''), email: pt.email };
+}
+function buildDrafts() {
+  const e = ui.email; if (!e) return [];
+  const p = projects.get(e.pid); if (!p) return [];
+  const pk = findPk(p, e.pkId); if (!pk) return [];
+  const where = p.name + ' (' + p.address + ')';
+  let docs;
+  if (e.mode === 'kickoff') docs = pk.docs.filter((d) => d.status === 'notdue');
+  else if (e.mode === 'request') docs = pk.docs.filter((d) => d.status === 'missing');
+  else docs = pk.docs.filter((d) => d.id === e.docId);
+  const owners = [...new Set(docs.map((d) => d.owner))];
+  return owners.map((o) => {
+    const c = contactFor(p, o); const items = docs.filter((d) => d.owner === o);
+    const list = items.map((d) => '  • ' + d.name + (d.ref ? ' (' + d.ref + ')' : '')).join('\n');
+    const key = e.mode + '|' + pk.id + '|' + (e.docId || '') + '|' + o;
+    let subject, body, attach = '';
+    if (e.mode === 'kickoff') {
+      subject = 'Kickoff: ' + pk.name + ' documents for ' + p.name;
+      body = 'Hi ' + c.first + ',\n\nWe’re kicking off the ' + pk.name + ' packet for ' + where + '. It goes to ' + pk.to + ', and you’re responsible for the following:\n\n' + list + '\n\nPlease upload each one to the packet in EQORE Vault as it’s completed. The Vault will send reminders and let you know if anything needs changes.\n\nUpload link: [EQORE Vault upload link]\n\nThanks,\nEQORE Project Management';
+    } else if (e.mode === 'request' || e.mode === 'early') {
+      subject = 'Action needed: ' + items.map((d) => d.name).join(', ') + ' for ' + p.name;
+      body = 'Hi ' + c.first + ',\n\nWe’re preparing the ' + pk.name + ' submission to ' + pk.to + ' for ' + where + '. We can’t submit the packet until we receive:\n\n' + list + '\n\nPlease upload ' + (items.length === 1 ? 'it' : 'them') + ' directly to the packet in EQORE Vault using the link below.\n\nUpload link: [EQORE Vault upload link]\n\nCould you send ' + (items.length === 1 ? 'it' : 'them') + ' as soon as possible, or let us know if you expect a delay?\n\nThanks,\nEQORE Project Management';
+    } else if (e.mode === 'denial') {
+      const d = items[0]; const reason = (d.note || '').split(' · ')[0].replace(/^Returned /, '');
+      subject = 'Denied by ' + pk.to + ': ' + d.name + ' for ' + p.name;
+      attach = 'Denial notice from ' + pk.to + ' (PDF)';
+      body = 'Hi ' + c.first + ',\n\n' + pk.to + ' denied the following document for ' + where + ':\n\n  • ' + d.name + (d.ref ? ' (' + d.ref + ')' : '') + '\n  • Returned ' + reason + '\n\nA copy of the denial is attached.\n\n' + (d.superseded ? 'The corrected version is already with ' + pk.to + ' for review, so no action is needed right now. Sending this for your records.\n\n' : 'Please prepare a corrected version and upload it to the ' + pk.name + ' packet in EQORE Vault.\n\nUpload link: [EQORE Vault upload link]\n\n') + 'Thanks,\nEQORE Project Management';
+    } else { // return with comments
+      const d = items[0];
+      const flags = (d.review ? d.review.flags : []).filter((f) => !f.dismissed);
+      const comments = flags.map((f, i) => (i + 1) + '. ' + f.title + (f.ref ? ' (' + f.ref + ')' : '') + '\n   ' + f.detail).join('\n\n');
+      subject = 'Changes needed: ' + d.name + ' for ' + p.name;
+      body = 'Hi ' + c.first + ',\n\nWe reviewed the ' + d.name + ' you uploaded to the ' + pk.name + ' packet for ' + where + '. Before we can submit it to ' + pk.to + ', please address the following:\n\n' + (comments || '(no comments)') + '\n\nUpload the corrected version to the same document in EQORE Vault and we’ll review it again.\n\nUpload link: [EQORE Vault upload link]\n\nThanks,\nEQORE Project Management';
+    }
+    const edits = e.edits || {};
+    return { key, owner: o, to: c.to, email: c.email, cc: 'EQORE Project Manager <pm@eqore.example>', subject, attach, body: edits[key] != null ? edits[key] : body };
+  });
+}
+async function copyText(t) {
+  try { await navigator.clipboard.writeText(t); toast('Copied to the clipboard.'); }
+  catch (e) { toast('Copy isn’t available here. Select the text in the box and copy it.'); }
+}
+function markSent() {
+  const e = ui.email; const drafts = buildDrafts(); if (!drafts.length) return;
+  const p = projects.get(e.pid);
+  const who = joinNames(drafts.map((d) => ((p && p.partners || []).find((x) => x.label === d.owner) || { name: d.owner }).name));
+  mutate(e.pid, (pp) => {
+    const pk = findPk(pp, e.pkId);
+    if (e.mode === 'kickoff') {
+      pk.docs.forEach((d) => { if (d.status === 'notdue') { d.status = 'missing'; d.note = 'Requested at kickoff · ' + day(); } });
+      pk.kicked = true; pk.lastSent = 'Packet kicked off. Requests sent to ' + who + ' · ' + stamp();
+      logTo(pp, 'Kicked off ' + pk.name + '. Document requests sent to ' + who + '.', 'info');
+    } else if (e.mode === 'request') {
+      pk.docs.forEach((d) => { if (d.status === 'missing') d.note = 'Request sent ' + stamp(); });
+      pk.lastSent = 'Request sent to ' + who + ' · ' + stamp();
+      logTo(pp, 'Requested missing ' + pk.name + ' documents from ' + who + '.', 'info');
+    } else if (e.mode === 'early') {
+      const d = findDoc(pk, e.docId); d.status = 'missing'; d.note = 'Requested ' + stamp();
+      pk.lastSent = 'Request for ' + d.name + ' sent to ' + who + ' · ' + stamp();
+      logTo(pp, 'Requested ' + d.name + ' from ' + who + '.', 'info');
+    } else if (e.mode === 'denial') {
+      const d = findDoc(pk, e.docId);
+      pk.lastSent = 'Denial for ' + d.name + ' sent to ' + who + ' · ' + stamp();
+      logTo(pp, 'Forwarded the denial of ' + d.name + ' to ' + who + '.', 'info');
+    } else {
+      const d = findDoc(pk, e.docId);
+      pk.lastSent = 'Comments on ' + d.name + ' sent to ' + who + ' · ' + stamp();
+      logTo(pp, 'Sent review comments on ' + d.name + ' to ' + who + '.', 'info');
+    }
+  });
+  ui.email = null; toast('Marked as sent and logged on the project.');
+}
+
+// ---------- Views ----------
+function App() {
+  const p = ui.route.startsWith('p-') ? projects.get(ui.route.slice(2)) : null;
+  return html`
+    <header class="appbar"><div class="wrap gutter">
+      <div class="row" style="gap:16px;min-width:0">
+        <a class="brand" href="#">${I.logo}<span>EQORE Vault</span></a>
+        ${p ? html`<nav class="crumbs" aria-label="Breadcrumb"><a href="#">Projects</a><span aria-hidden="true">/</span><span class="here">${p.name}</span></nav>` : nothing}
+      </div>
+      <div class="who">
+        ${mode === 'local' ? html`<span class="modechip" title="Changes are saved in this browser only">Saved on this device</span>` : nothing}
+        <span>Signed in as ${myName || 'EQORE'} · Project manager</span>
+        <span class="avatar" aria-hidden="true">${myName ? myName.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase() : 'PM'}</span>
+      </div>
+    </div></header>
+    ${mode === 'loading' ? html`<div class="loading">Opening EQORE Vault…</div>`
+      : ui.route.startsWith('p-') ? (p ? Project(p) : html`<main class="wrap gutter"><div class="card"><h2>Project not found</h2><p class="muted">It may have been removed. <a href="#">Back to all projects</a></p></div></main>`)
+      : Portfolio()}
+    ${mode !== 'loading' ? html`<footer class="wrap gutter">
+      <span>${mode === 'shared' ? 'Changes save automatically and everyone with this page sees them.' : 'Changes are saved in this browser only.'} Partner names and emails are examples.</span>
+      <button class="btn xs" @click=${() => { ui.confirm = { title: 'Reset demo data?', text: 'This replaces every project with the original demo data. Uploaded files and AI reviews on demo documents are removed from the vault.', label: 'Reset demo', run: resetDemo }; rerender(); }}>Reset demo data</button>
+    </footer>` : nothing}
+    ${Modals()}
+    ${ui.toast ? html`<div class="toast" role="status">${ui.toast}</div>` : nothing}`;
+}
+
+async function resetDemo() {
+  ui.confirm = null; rerender();
+  for (const id of [...projects.keys()]) { projects.delete(id); await store.remove(id).catch(() => {}); }
+  if (!db) local.data = { projects: {}, texts: {} };
+  location.hash = '';
+  await seedDemo();
+  toast('Demo data restored.');
+}
+
+function Portfolio() {
+  const list = [...projects.values()].sort((a, b) => (a.order || 99) - (b.order || 99) || (b.createdAt || 0) - (a.createdAt || 0));
+  const sums = list.map((p) => ({ p, s: projectSummary(p) }));
+  const tot = (k) => sums.reduce((n, x) => n + x.s[k], 0);
+  const kpis = [
+    ['Active projects', list.length, 'Pre-planning through operations', 'var(--faint)'],
+    ['Submissions blocked', tot('blocked'), 'Held until complete', 'var(--bad-dot)'],
+    ['Returned by reviewers', tot('denied'), 'Revise and resubmit', 'var(--warn-dot)'],
+    ['Waiting on partners', tot('missing'), 'Documents requested', 'var(--accent)'],
+    ['Needs EQORE review', tot('review'), 'Uploaded, not reviewed', 'var(--ok-dot)']
+  ];
+  const PH = { 'Pre-planning': 'idle', 'Permitting': 'mid', 'Interconnection': 'violet', 'Construction': 'blue', 'Commissioning': 'teal', 'Operations': 'ok' };
+  return html`<main class="wrap gutter">
+    <div class="head">
+      <div class="col" style="gap:4px"><div class="eyebrow">Portfolio</div><h1 style="font-size:30px">Projects</h1></div>
+      <button class="btn primary" @click=${() => { ui.newProject = { name: '', address: '', size: '', epc: '', contact: '', email: '' }; rerender(); }}>+ New project</button>
+    </div>
+    <div class="kpis">${kpis.map((k) => html`<div class="kpi"><div class="l"><span class="dot" style="background:${k[3]}"></span>${k[0]}</div><div class="v">${k[1]}</div><div class="small muted">${k[2]}</div></div>`)}</div>
+    <section class="card">
+      <h2 style="font-size:19px">All projects</h2>
+      ${list.length ? html`<div class="scrollbox"><div class="ptable">
+        <div class="prow hd"><div>Project</div><div>Phase</div><div>Documents in</div><div>Next submission</div><div>Needs attention</div></div>
+        ${sums.map(({ p, s }) => html`<div class="prow">
+          <div class="col" style="gap:2px;min-width:0"><a class="pname" href=${'#p-' + p.id}>${p.name}</a><span class="small muted">${p.size || 'Size TBD'} · EPC: ${p.epc || 'TBD'}</span></div>
+          <div><span class=${'pill ' + (PH[p.stage] === 'violet' ? 't-changes' : 'tone-' + (PH[p.stage] || 'idle'))}>${p.stage || 'Pre-planning'}</span></div>
+          <div class="col" style="gap:6px"><span class="tnum" style="font-weight:600;font-size:13px">${s.done} of ${s.due}</span><div class="bar"><span style=${'width:' + (s.due ? Math.round(s.done / s.due * 100) : 0) + '%'}></span></div></div>
+          <div style="font-size:13px;color:var(--fg-2)">${s.next}</div>
+          <div class=${'attn-' + s.attnTone} style="font-size:13px">${s.attn}</div>
+        </div>`)}
+      </div></div><div class="small muted">Open a project to see its document packets.</div>`
+      : html`<div class="empty" style="min-height:180px;max-width:none"><strong>No projects yet</strong><span>Create a project to set up its document packets, or reset the demo data below.</span></div>`}
+    </section>
+  </main>`;
+}
+
+function Project(p) {
+  const infos = new Map(p.packets.map((pk) => [pk.id, packetInfo(pk)]));
+  let selId = ui.sel[p.id];
+  if (!selId || !findPk(p, selId)) {
+    const first = p.packets.find((pk) => infos.get(pk.id).gate === 'blocked') || p.packets.find((pk) => !finished(infos.get(pk.id).gate) && infos.get(pk.id).gate !== 'later') || p.packets[0];
+    selId = first ? first.id : null; ui.sel[p.id] = selId;
+  }
+  const pk = selId ? findPk(p, selId) : null;
+  const blockedCount = [...infos.values()].filter((i) => i.gate === 'blocked').length;
+  const reviewCount = p.packets.reduce((n, x) => n + x.docs.filter((d) => d.status === 'action').length, 0);
+  const coll = ui.collapsed[p.id] || (ui.collapsed[p.id] = Object.fromEntries(PHASES.map((ph) => [ph, p.packets.filter((x) => x.phase === ph).length > 0 && p.packets.filter((x) => x.phase === ph).every((x) => finished(infos.get(x.id).gate))])));
+  const phases = PHASES.map((ph, i) => {
+    const ps = p.packets.filter((x) => x.phase === ph); const is = ps.map((x) => infos.get(x.id));
+    let state = 'Upcoming', color = 'var(--muted)', note = ps.length ? plural(ps.length, 'packet') : 'No packets';
+    if (ps.length && is.every((x) => finished(x.gate))) { state = 'Complete'; color = 'var(--ok-fg)'; note = 'All approved'; }
+    else if (is.some((x) => x.gate !== 'later' && x.gate !== 'empty')) {
+      state = 'In progress'; color = 'var(--fg-2)';
+      const b = is.filter((x) => x.gate === 'blocked').length, w = is.filter((x) => x.gate === 'waiting').length, o = is.filter((x) => !finished(x.gate) && x.gate !== 'later').length;
+      note = b ? plural(b, 'packet') + ' blocked' : w && w === o ? 'Waiting on reviewer' : plural(o, 'packet') + ' open';
+    }
+    return { ph, i, state, color, note, cur: p.stage === ph };
+  });
+  return html`<main class="wrap gutter">
+    <section class="card" style="padding:22px 24px;gap:18px">
+      <div class="head" style="align-items:flex-start">
+        <div class="col" style="gap:6px;min-width:0"><h1 style="font-size:28px">${p.name}</h1><div class="muted">${p.address || 'Address not set'} · ${p.size || 'Size TBD'}</div></div>
+        <div class="row">
+          ${blockedCount ? html`<span class="flag-pill tone-bad">${I.lock}${plural(blockedCount, 'submission')} blocked</span>` : nothing}
+          ${reviewCount ? html`<span class="flag-pill tone-mid">${I.clock}${plural(reviewCount, 'document')} to review</span>` : nothing}
+          ${!blockedCount && !reviewCount ? html`<span class="flag-pill tone-ok">${I.check} Nothing blocked</span>` : nothing}
+        </div>
+      </div>
+      <div class="row">
+        <span style="font-size:13px;font-weight:600;color:var(--fg-2);margin-right:4px">Who can upload</span>
+        ${(p.partners || []).map((pt) => html`<span class="chip"><strong>${pt.name}</strong><span class="muted">${pt.role}</span></span>`)}
+        <button class="btn sm dashed pillbtn" @click=${() => { ui.invite = { pid: p.id, name: '', role: '', label: '', contact: '', email: '' }; rerender(); }}>+ Invite partner</button>
+      </div>
+      <div class="lifecycle">${phases.map((x) => html`<button class=${'phase' + (x.cur ? ' cur' : '')} @click=${() => { coll[x.ph] = false; const f = p.packets.find((k) => k.phase === x.ph); if (f) ui.sel[p.id] = f.id; rerender(); }}>
+        <div class="row" style="justify-content:space-between;width:100%"><span class="eyebrow" style="font-size:11px">Phase ${x.i + 1}</span><span style=${'display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:' + (x.cur ? 'var(--accent)' : x.color)}>${x.state === 'Complete' ? I.check : nothing}${x.cur ? 'Current' : x.state}</span></div>
+        <div style="font-size:15px;font-weight:600">${x.ph}</div><div class="small muted">${x.note}</div>
+      </button>`)}</div>
+      <details class="facts">
+        <summary>${I.caret} Project settings and plan set facts the AI checks against</summary>
+        <div class="col" style="gap:12px;padding-top:8px">
+          <div class="grid3">
+            <label class="field">Current phase<select .value=${p.stage || 'Pre-planning'} @change=${(e) => mutate(p.id, (pp) => { pp.stage = e.target.value; logTo(pp, 'Project moved to ' + e.target.value + '.', 'info'); })}>${PHASES.map((ph) => html`<option value=${ph} ?selected=${(p.stage || 'Pre-planning') === ph}>${ph}</option>`)}</select></label>
+          </div>
+          <label class="field">Plan set facts<textarea id=${'facts-' + p.id} class="inp" rows="7" .value=${ui.factsDraft && ui.factsDraft.pid === p.id ? ui.factsDraft.text : (p.facts || '')} @input=${(e) => { ui.factsDraft = { pid: p.id, text: e.target.value }; }} placeholder="Key facts from the stamped plan set: equipment, breaker ratings, sheet numbers, suppression system…"></textarea></label>
+          <div class="row"><button class="btn sm primary" @click=${() => { const t = ui.factsDraft && ui.factsDraft.pid === p.id ? ui.factsDraft.text : p.facts; ui.factsDraft = null; mutate(p.id, (pp) => { pp.facts = t; }); toast('Plan set facts saved.'); }}>Save facts</button><span class="small muted">Every AI pre-review on this project compares documents against these facts.</span></div>
+        </div>
+      </details>
+    </section>
+
+    <div class="split">
+      <div class="packets">
+        <div class="row" style="justify-content:space-between"><h2 style="font-size:19px">Document packets</h2>
+          <button class="btn sm outline" @click=${() => { ui.newPacket = { pid: p.id, name: '', to: '', phase: p.stage || 'Permitting', tpl: 'Blank', copyFrom: '' }; rerender(); }}>+ Custom packet</button></div>
+        ${PHASES.map((ph) => {
+          const items = p.packets.filter((x) => x.phase === ph); if (!items.length) return nothing;
+          const open = !coll[ph]; const allDone = items.every((x) => finished(infos.get(x.id).gate));
+          const b = items.filter((x) => infos.get(x.id).gate === 'blocked').length;
+          return html`<button class=${'group' + (open ? ' open' : '')} aria-expanded=${open ? 'true' : 'false'} @click=${() => { coll[ph] = open; rerender(); }}>
+            ${I.caret}<span class="eyebrow" style="color:var(--fg-2)">${ph}</span>${allDone ? html`<span style="color:var(--ok-dot)">${I.check}</span>` : nothing}
+            <span class="small muted" style="margin-left:auto">${plural(items.length, 'packet')}${allDone ? ' · Complete' : b ? ' · ' + b + ' blocked' : ''}</span></button>
+          ${open ? html`<div class="col" style="gap:8px;padding:4px 0 6px">${items.map((x) => { const i = infos.get(x.id); return html`
+            <button class=${'pk' + (x.id === selId ? ' on' : '')} @click=${() => { ui.sel[p.id] = x.id; ui.addDoc = null; rerender(); }}>
+              <div class="row" style="justify-content:space-between;align-items:flex-start;width:100%;flex-wrap:nowrap">
+                <div class="col" style="gap:2px;min-width:0"><span style="font-size:15px;font-weight:600">${x.name}</span><span class="small muted">To: ${x.to}</span></div>
+                <span class=${'pill tone-' + i.tone} style="flex:none">${i.status}</span></div>
+              <div class="row" style="width:100%;flex-wrap:nowrap"><div class="bar"><span style=${'width:' + (i.total ? Math.round(i.done / i.total * 100) : 0) + '%;background:' + ({ ok: 'var(--ok-dot)', bad: 'var(--bad-dot)', idle: 'var(--faint)', teal: 'var(--teal-fg)' }[i.tone] || 'var(--accent)')}></span></div>
+                <span class="small tnum" style="font-weight:600;color:var(--fg-2)">${i.done} / ${i.total}</span></div>
+            </button>`; })}</div>` : nothing}`;
+        })}
+      </div>
+      <div class="detail">
+        ${pk ? PacketDetail(p, pk, infos.get(pk.id)) : html`<div class="card"><p class="muted">No packets yet. Add a custom packet to start.</p></div>`}
+        <section class="card">
+          <h2 style="font-size:17px">Activity</h2>
+          ${(p.activity || []).length ? html`<div class="activity">${p.activity.slice(0, 10).map((a) => html`<div class="it"><span class="dot" style=${'background:' + ({ bad: 'var(--bad-dot)', warn: 'var(--warn-dot)', ok: 'var(--ok-dot)' }[a.tone] || 'var(--accent)')}></span><div class="col" style="gap:2px;min-width:0"><span>${a.text}</span><span class="small muted">${a.at}</span></div></div>`)}</div>`
+            : html`<p class="muted" style="margin:0">Uploads, reviews, requests and submissions show up here.</p>`}
+        </section>
+      </div>
+    </div>
+  </main>`;
+}
+
+function PacketDetail(p, pk, info) {
+  const c = info.c;
+  const parts = [];
+  if (c.missing) parts.push(c.missing + ' missing');
+  if (c.action) parts.push(c.action + ' awaiting EQORE review');
+  if (c.changes) parts.push(c.changes + ' returned to partner for changes');
+  if (c.denied) parts.push(c.denied + ' denied, needs a corrected version');
+  const letter = pk.docs.find((d) => d.letter);
+  const G = {
+    complete: ['Phase complete', 'g-ok'],
+    approved: ['Approved by ' + pk.to, 'g-ok'],
+    blocked: ['Submission blocked: ' + parts.join(', '), 'g-bad'],
+    waiting: ['With ' + pk.to + ' for review', 'g-blue'],
+    progress: ['Collecting documents' + (parts.length ? ': ' + parts.join(', ') : ''), 'g-idle'],
+    ready: ['Ready to submit to ' + pk.to, 'g-teal'],
+    later: ['Not started', 'g-idle'],
+    kickedoff: ['Kicked off: waiting on partners to upload', 'g-blue'],
+    empty: ['Add the documents this packet needs', 'g-idle']
+  }[info.gate];
+  const explain = {
+    blocked: 'The Vault holds the submission until every document is in and reviewed by EQORE. Open any document to upload, review or request it.',
+    waiting: 'Submitted documents are with ' + pk.to + '. Record their decision here when it comes back.',
+    ready: 'Every document is in and reviewed. Submitting marks them as sent to ' + pk.to + '.',
+    later: 'Kick off the packet to email each partner the documents they owe.',
+    kickedoff: 'Each partner was emailed the list of documents they owe. Uploads appear here as they arrive.',
+    progress: 'Documents due later in the project stay “Not due yet” until they’re requested.',
+    empty: 'Use “Add required document” below to list what ' + pk.to + ' needs.'
+  }[info.gate] || pk.blurb || '';
+  const canSubmit = info.gate === 'ready';
+  return html`<section class="card" style="padding:22px">
+    <div class="head" style="align-items:flex-start">
+      <div class="col" style="gap:4px;min-width:0"><div class="eyebrow">${pk.phase} · ${pk.kind}</div><h2 style="font-size:22px">${pk.name}</h2>
+        <div class="muted">Submitted to: ${pk.to} · Responsible: ${pk.owner}</div>
+        ${pk.blurb ? html`<div class="small muted">${pk.blurb}</div>` : nothing}</div>
+      <span class=${'pill lg tone-' + info.tone}>${info.status}</span>
+    </div>
+    <div class=${'gate ' + G[1]}>
+      <div class="row" style="align-items:flex-start;flex-wrap:nowrap">${info.gate === 'blocked' ? html`<span style="margin-top:2px">${I.lock}</span>` : nothing}
+        <div class="col" style="gap:4px"><div style="font-size:15px;font-weight:700">${G[0]}</div><div style="font-size:13px;line-height:1.5">${explain}</div></div></div>
+      <div class="row">
+        ${info.gate === 'later' ? html`<button class="btn primary" @click=${() => { ui.email = { mode: 'kickoff', pid: p.id, pkId: pk.id, edits: {} }; rerender(); }}>${I.send} Kick off packet</button>` : nothing}
+        ${info.gate === 'waiting' ? html`<button class="btn primary" @click=${() => { ui.decision = { pid: p.id, pkId: pk.id, outcome: 'approved', pick: {}, reason: '', letter: null }; rerender(); }}>Record decision from ${pk.to}</button>`
+          : info.gate === 'approved' ? (letter ? html`<button class="btn primary" @click=${() => { ui.openDoc = { pid: p.id, pkId: pk.id, docId: letter.id }; rerender(); }}>View approval letter</button>` : nothing)
+          : info.gate === 'complete' ? nothing
+          : html`<button class=${'btn' + (canSubmit ? ' primary' : '')} ?disabled=${!canSubmit} @click=${() => { ui.submit = { pid: p.id, pkId: pk.id }; rerender(); }}>Submit to ${pk.to}</button>`}
+        ${c.missing ? html`<button class="btn danger" @click=${() => { ui.email = { mode: 'request', pid: p.id, pkId: pk.id, edits: {} }; rerender(); }}>Request missing documents</button>` : nothing}
+        ${info.gate === 'approved' ? html`<button class="btn" @click=${() => { ui.confirm = { title: 'Close this packet?', text: 'The packet is marked complete and kept for reference.', label: 'Close packet', run: () => { ui.confirm = null; mutate(p.id, (pp) => { const k = findPk(pp, pk.id); k.closed = true; logTo(pp, k.name + ' closed as complete.', 'ok'); }); } }; rerender(); }}>Close packet</button>` : nothing}
+        ${info.gate === 'complete' ? html`<button class="btn" @click=${() => mutate(p.id, (pp) => { findPk(pp, pk.id).closed = false; })}>Reopen packet</button>` : nothing}
+      </div>
+      ${pk.lastSent ? html`<div class="sentmsg">${I.check} ${pk.lastSent}</div>` : nothing}
+    </div>
+    <div class="row" style="gap:6px">${ORDER.filter((k) => c[k] > 0 || k !== 'notdue').map((k) => html`<span class=${'pill t-' + k + (c[k] ? '' : ' dim')}>${DS[k]} · ${c[k]}</span>`)}</div>
+    <div class="scrollbox"><div class="dtable">
+      <div class="drow hd"><div>Document</div><div>Owner</div><div>Status</div><div>Latest</div></div>
+      ${pk.docs.map((d) => {
+        const opts = [...new Set((p.partners || []).map((x) => x.label).concat(OWNER_DEFAULTS, [d.owner]))];
+        const open = () => { ui.openDoc = { pid: p.id, pkId: pk.id, docId: d.id }; ui.dismissFor = null; rerender(); };
+        return html`<div class=${'drow' + (d.status === 'action' ? ' hl' : '')}>
+          <button class="linkish" @click=${open}>${I.file}<span class="col" style="gap:1px;min-width:0"><span class="nm">${d.name}</span><span class="small muted">${d.ref}${d.file ? ' · ' + d.file.name : ''}</span></span></button>
+          <label class="col" style="gap:2px;min-width:0"><span class="sr">Owner of ${d.name}</span>
+            <select class=${'owner' + (d.reassigned ? ' re' : '')} .value=${d.owner} @change=${(e) => mutate(p.id, (pp) => { const dd = findDoc(findPk(pp, pk.id), d.id); logTo(pp, dd.name + ' reassigned from ' + dd.owner + ' to ' + e.target.value + '.', 'info'); dd.owner = e.target.value; dd.reassigned = true; })}>
+              ${opts.map((o) => html`<option value=${o} ?selected=${o === d.owner}>${o}</option>`)}</select>
+            ${d.reassigned ? html`<span style="font-size:11px;font-weight:600;color:var(--accent)">Reassigned</span>` : nothing}</label>
+          <button class="linkish" @click=${open}><span class=${'pill t-' + d.status}>${DS[d.status]}</span></button>
+          <button class="linkish" @click=${open} style="font-size:13px"><span class=${d.status === 'missing' || d.status === 'denied' ? 'note-bad' : d.status === 'action' ? 'note-warn' : 'note-ok'}>${d.note}</span></button>
+        </div>`;
+      })}
+      <div style="padding:12px 14px;border-top:1px solid var(--line-2)">
+        ${!ui.addDoc || ui.addDoc.pkId !== pk.id
+          ? html`<button class="btn sm dashed" @click=${() => { ui.addDoc = { pkId: pk.id, name: '', ref: '', owner: 'Granite EPC' }; rerender(); }}>+ Add required document</button>`
+          : AddDocForm(p, pk)}
+      </div>
+    </div></div>
+  </section>`;
+}
+
+function AddDocForm(p, pk) {
+  const a = ui.addDoc; const opts = [...new Set((p.partners || []).map((x) => x.label).concat(OWNER_DEFAULTS))];
+  return html`<form class="formbox" @submit=${(e) => {
+    e.preventDefault(); if (!a.name.trim()) return;
+    mutate(p.id, (pp) => { const k = findPk(pp, pk.id); k.docs.push({ id: uid('d'), name: a.name.trim(), ref: a.ref.trim() || 'Custom requirement', owner: a.owner, status: 'missing', note: 'Added ' + stamp(), custom: true, history: [{ at: stamp(), text: 'Added as a requirement' }] }); logTo(pp, 'Added ' + a.name.trim() + ' to ' + k.name + ' (owner: ' + a.owner + ').', 'info'); });
+    ui.addDoc = null;
+  }}>
+    <div style="font-weight:700">Add a required document to ${pk.name}</div>
+    <div class="grid3">
+      <label class="field">Document name<input id="nd-name" type="text" .value=${a.name} @input=${(e) => { a.name = e.target.value; rerender(); }} placeholder="e.g. Knox box key confirmation" required></label>
+      <label class="field">Reference (optional)<input id="nd-ref" type="text" .value=${a.ref} @input=${(e) => { a.ref = e.target.value; }} placeholder="e.g. Fire marshal comment, ESS-18.0"></label>
+      <label class="field">Who provides it<select id="nd-owner" .value=${a.owner} @change=${(e) => { a.owner = e.target.value; }}>${opts.map((o) => html`<option ?selected=${o === a.owner}>${o}</option>`)}</select></label>
+    </div>
+    <div class="small muted">It’s added as Missing. The packet can’t be submitted until it’s uploaded and reviewed.</div>
+    <div class="row"><button class="btn primary" type="submit" ?disabled=${!a.name.trim()}>Add document</button><button class="btn" type="button" @click=${() => { ui.addDoc = null; rerender(); }}>Cancel</button></div>
+  </form>`;
+}
+
+function currentDoc() {
+  const o = ui.openDoc; if (!o) return null;
+  const p = projects.get(o.pid); if (!p) return null; const pk = findPk(p, o.pkId); if (!pk) return null; const doc = findDoc(pk, o.docId); if (!doc) return null;
+  return { p, pk, doc };
+}
+
+function Preview(p, pk, d) {
+  const pickFile = (e) => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (f) uploadFor(p.id, pk.id, d.id, f); };
+  const drop = {
+    dragover: (e) => { e.preventDefault(); if (!ui.drag) { ui.drag = true; rerender(); } },
+    dragleave: () => { ui.drag = false; rerender(); },
+    drop: (e) => { e.preventDefault(); ui.drag = false; const f = e.dataTransfer.files && e.dataTransfer.files[0]; if (f) uploadFor(p.id, pk.id, d.id, f); else rerender(); }
+  };
+  const uploader = (label, sub) => html`<div class=${'empty' + (ui.drag ? ' drag' : '')} @dragover=${drop.dragover} @dragleave=${drop.dragleave} @drop=${drop.drop}>
+    ${I.upload}<strong style="color:var(--fg)">${label}</strong><span>${sub}</span>
+    ${ui.docAction ? html`<div class="thinking"><span class="spin"></span>${ui.docAction}</div>` : html`<label class="btn primary">Choose file<input type="file" class="sr" accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.txt,.md,.csv,.json" @change=${pickFile}></label>`}
+    <span class="small">PDF, image or text file, up to 20 MB${assets ? '' : '. Files are kept for this visit only'}.</span></div>`;
+  if (!d.file) {
+    return html`<div class="preview">${uploader(d.status === 'notdue' ? 'Not due yet' : 'Nothing uploaded yet', 'Drop the file here to upload it for ' + d.owner + '. The AI pre-review runs as soon as it arrives.')}</div>`;
+  }
+  const f = d.file; const url = fileUrl(f) || localUrl(d.id);
+  const flags = d.review ? d.review.flags.filter((x) => !x.dismissed) : [];
+  let body;
+  if (f.type === 'application/pdf') body = html`<div class="pdfpages" data-pdf=${d.id}></div>`;
+  else if (isImg(f.type)) body = url ? html`<img class="doc" src=${url} alt=${d.name}>` : html`<div class="empty">The image isn’t available in this view.</div>`;
+  else {
+    if (!textCache.has(d.id)) { store.getText(d.id).then(rerender).catch(() => {}); body = html`<div class="paper">Loading…</div>`; }
+    else {
+      const lines = (textCache.get(d.id) || '').split('\n');
+      body = html`<div class="paper">${lines.map((ln, i) => {
+        const hit = flags.find((fl) => fl.quote && ln.includes(fl.quote));
+        const cls = i === 0 ? 't' : /^\d+\.\s+[A-Z]/.test(ln) && ln.length < 60 && !/\.$/.test(ln) ? 'h' : '';
+        return ln.trim() ? html`<div class=${'ln ' + cls + (hit ? ' flagged' : '')}><span>${ln}</span>${hit ? html`<span class=${'badge b ' + hit.severity}>${hit.n}</span>` : nothing}</div>` : html`<div style="height:8px"></div>`;
+      })}</div>`;
+    }
+  }
+  return html`<div class="preview">
+    <div class="row" style="width:100%;max-width:640px;justify-content:space-between">
+      <span class="small muted" style="min-width:0;overflow-wrap:anywhere">${f.name} · ${Math.max(1, Math.round((f.size || 0) / 1024))} KB · ${f.at}</span>
+      <span class="row">
+        ${url && !f.textOnly ? html`<a class="btn xs" href=${url} target="_blank" rel="noopener">Open file</a>` : nothing}
+        ${ui.docAction ? html`<span class="small">${ui.docAction}</span>` : html`<label class="btn xs">Replace file<input type="file" class="sr" accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.txt,.md,.csv,.json" @change=${pickFile}></label>`}
+      </span>
+    </div>
+    ${body}
+  </div>`;
+}
+
+function Review(p, pk, d) {
+  const busy = ui.ai && ui.ai.docId === d.id && !ui.ai.error;
+  const err = ui.ai && ui.ai.docId === d.id && ui.ai.error;
+  const r = d.review;
+  const active = r ? r.flags.filter((f) => !f.dismissed) : [];
+  const nHigh = active.filter((f) => f.severity === 'high').length;
+  const setFlag = (n, val) => mutate(p.id, (pp) => { const dd = findDoc(findPk(pp, pk.id), d.id); const fl = dd.review.flags.find((x) => x.n === n); fl.dismissed = val; if (val) logTo(pp, 'Dismissed AI flag “' + fl.title + '” on ' + dd.name + ': ' + val.reason, 'info'); });
+  return html`<div class="col" style="gap:12px">
+    <div class="row" style="justify-content:space-between">
+      <div class="row">${I.spark}<h3 style="font-size:18px">AI pre-review</h3></div>
+      ${d.file && !busy ? html`<button class="btn xs" ?disabled=${!sample} title=${sample ? '' : 'Open this page on claude.ai to use AI review'} @click=${() => runReview(p.id, pk.id, d.id)}>${r ? 'Run again' : 'Run review'}</button>` : nothing}
+    </div>
+    ${!d.file ? html`<div class="small muted">Runs automatically when a file is uploaded. It checks the document against the plan set facts and the rest of this packet.</div>` : nothing}
+    ${busy ? html`<div class="thinking"><span class="spin"></span><span style="flex:1">${ui.ai.phase || 'Reviewing…'}</span><button class="btn xs" @click=${() => ui.ai.ctl && ui.ai.ctl.abort()}>Stop</button></div>` : nothing}
+    ${err ? html`<div class="banner">${err}</div>` : nothing}
+    ${d.file && !r && !busy && !err ? html`<div class="small muted">${sample ? 'No review yet for this file.' : 'AI review runs when this page is opened on claude.ai.'}</div>` : nothing}
+    ${r && !busy ? html`
+      ${r.summary ? html`<div style="font-size:13px;color:var(--fg-2);line-height:1.5">${r.summary}</div>` : nothing}
+      <div class="row" style="gap:6px">
+        ${nHigh ? html`<span class="pill tone-bad">${nHigh} high</span>` : nothing}
+        ${active.length - nHigh ? html`<span class="pill tone-mid">${active.length - nHigh} medium/low</span>` : nothing}
+        ${r.flags.length - active.length ? html`<span class="pill tone-idle">${r.flags.length - active.length} dismissed</span>` : nothing}
+        ${r.passed.length ? html`<span class="pill tone-ok">${plural(r.passed.length, 'check')} passed</span>` : nothing}
+        ${!r.flags.length ? html`<span class="pill tone-ok">No issues found</span>` : nothing}
+      </div>
+      ${r.flags.map((f) => f.dismissed ? html`<div class="flag off">
+          <div class="row" style="flex-wrap:nowrap"><span class="badge off">${f.n}</span><span style="font-size:13px;font-weight:600;color:var(--muted);text-decoration:line-through;flex:1">${f.title}</span>
+            <button class="btn xs" @click=${() => setFlag(f.n, null)}>Undo</button></div>
+          <div class="small" style="color:var(--fg-2)"><strong>Dismissed ${f.dismissed.at}:</strong> ${f.dismissed.reason}</div></div>`
+        : html`<div class=${'flag ' + f.severity}>
+          <div class="row" style="flex-wrap:nowrap"><span class=${'badge ' + f.severity}>${f.n}</span><span class=${'eyebrow sev-' + f.severity} style="font-size:11px">${f.severity}</span><span class="small muted" style="margin-left:auto;text-align:right">${f.ref}</span></div>
+          <div style="font-weight:700">${f.title}</div><div style="font-size:13px;color:var(--fg-2);line-height:1.5">${f.detail}</div>
+          ${ui.dismissFor === f.n ? html`<div class="col" style="gap:8px">
+              <label class="field" style="font-size:12px">Why is this not an issue? (required)<textarea id=${'dismiss-' + f.n} rows="3" .value=${ui.dismissText} @input=${(e) => { ui.dismissText = e.target.value; rerender(); }} placeholder="e.g. Engineer of record confirmed 400 A is correct; ESS-13.0 will be revised."></textarea></label>
+              <div class="row"><button class=${'btn xs' + (ui.dismissText.trim() ? ' primary' : '')} ?disabled=${!ui.dismissText.trim()} @click=${() => { const reason = ui.dismissText.trim(); ui.dismissFor = null; ui.dismissText = ''; setFlag(f.n, { reason, at: stamp(), by: myName || 'EQORE' }); }}>Dismiss with reason</button>
+              <button class="btn xs" @click=${() => { ui.dismissFor = null; ui.dismissText = ''; rerender(); }}>Cancel</button></div></div>`
+            : html`<button class="btn xs" style="align-self:flex-start" @click=${() => { ui.dismissFor = f.n; ui.dismissText = ''; rerender(); }}>Dismiss flag</button>`}
+        </div>`)}
+      ${r.passed.map((x) => html`<div class="passed">${I.check}<span>${x}</span></div>`)}
+      <div class="small muted">Reviewed ${r.at}${r.model === 'demo' ? ' (demo result; run again for a live review)' : ''}.</div>` : nothing}
+  </div>`;
+}
+
+function DocModal() {
+  const cd = currentDoc(); if (!cd) return nothing;
+  const { p, pk, doc: d } = cd;
+  const close = () => { ui.openDoc = null; ui.dismissFor = null; if (ui.ai && ui.ai.error) ui.ai = null; rerender(); };
+  const setStatus = (status, note, log, tone) => mutate(p.id, (pp) => { const dd = findDoc(findPk(pp, pk.id), d.id); dd.status = status; dd.note = note; dd.history = [{ at: stamp(), text: log }].concat(dd.history || []); logTo(pp, log + ' (' + dd.name + ', ' + pk.name + ')', tone); });
+  const active = d.review ? d.review.flags.filter((f) => !f.dismissed) : [];
+  const ownerName = d.owner;
+  let actions = nothing;
+  if (d.status === 'action') actions = html`
+    ${active.length ? html`<button class="btn primary grow" @click=${() => { setStatus('changes', 'Returned ' + day() + ' with ' + plural(active.length, 'comment'), 'Returned to ' + ownerName + ' with ' + plural(active.length, 'comment'), 'warn'); ui.openDoc = null; ui.email = { mode: 'return', pid: p.id, pkId: pk.id, docId: d.id, edits: {} }; rerender(); }}>Return to ${ownerName} with ${plural(active.length, 'comment')}</button>` : nothing}
+    <button class=${'btn grow' + (active.length ? '' : ' teal')} @click=${() => { setStatus('ready', 'Reviewed by EQORE · ' + day(), 'Marked ready for submission by EQORE' + (active.length ? ' with ' + plural(active.length, 'open flag') : ''), 'ok'); close(); }}>${active.length ? 'Mark ready anyway' : 'Mark ready for submission'}</button>`;
+  else if (d.status === 'missing' || d.status === 'changes') actions = html`<button class="btn primary grow" @click=${() => { ui.openDoc = null; ui.email = { mode: 'early', pid: p.id, pkId: pk.id, docId: d.id, edits: {} }; rerender(); }}>${d.status === 'changes' ? 'Remind ' + ownerName : 'Request from ' + ownerName}</button>`;
+  else if (d.status === 'notdue') actions = html`<button class="btn grow" @click=${() => { ui.openDoc = null; ui.email = { mode: 'early', pid: p.id, pkId: pk.id, docId: d.id, edits: {} }; rerender(); }}>Request now from ${ownerName}</button>`;
+  else if (d.status === 'ready') actions = html`<button class="btn grow" @click=${() => setStatus('action', 'Moved back to review · ' + day(), 'Moved back to EQORE review', 'info')}>Move back to review</button>`;
+  else if (d.status === 'submitted') actions = html`<div class="small muted" style="width:100%">Record ${pk.to}’s decision for the whole packet from “Record decision”, or for this document:</div>
+    <button class="btn teal grow" @click=${() => setStatus('approved', 'Approved ' + day(), 'Approved by ' + pk.to, 'ok')}>Approved</button>
+    <button class="btn danger grow" @click=${() => { ui.decision = { pid: p.id, pkId: pk.id, outcome: 'returned', pick: { [d.id]: true }, reason: '', letter: null }; ui.openDoc = null; rerender(); }}>Denied / returned</button>`;
+  else if (d.status === 'denied') actions = html`<button class="btn primary grow" @click=${() => { ui.openDoc = null; ui.email = { mode: 'denial', pid: p.id, pkId: pk.id, docId: d.id, edits: {} }; rerender(); }}>Send denial to ${ownerName}</button>`;
+  return html`<div class="scrim" @click=${(e) => { if (e.target === e.currentTarget) close(); }}>
+    <div class="dialog wide" role="dialog" aria-modal="true" aria-label=${'Document: ' + d.name}>
+      <div class="dhead">
+        <div class="col" style="gap:2px;min-width:0"><div class="eyebrow">${pk.name}</div><h2 style="font-size:20px">${d.name}</h2><div class="small muted">${d.ref} · Owner: ${d.owner} · ${d.note}</div></div>
+        <div class="row"><span class=${'pill lg t-' + d.status}>${DS[d.status]}</span><button class="iconbtn" aria-label="Close document" @click=${close}>${I.close}</button></div>
+      </div>
+      <div class="viewer">
+        ${Preview(p, pk, d)}
+        <div class="panel">
+          ${Review(p, pk, d)}
+          <div class="small muted" style="line-height:1.5;border-top:1px solid var(--line-2);padding-top:10px">The AI flags likely issues to speed up review. An EQORE reviewer makes the final call before anything goes to ${pk.to}.</div>
+          ${actions !== nothing ? html`<div class="row" style="margin-top:auto">${actions}</div>` : nothing}
+          ${(d.history || []).length ? html`<details><summary>${I.caret} History</summary><div class="hist">${d.history.slice(0, 12).map((h) => html`<div><strong>${h.at}</strong> · ${h.text}</div>`)}</div></details>` : nothing}
+          ${d.custom ? html`<button class="btn xs danger" style="align-self:flex-start" @click=${() => { ui.confirm = { title: 'Remove ' + d.name + '?', text: 'It’s taken off the ' + pk.name + ' packet. Its upload history is removed with it.', label: 'Remove document', run: () => { ui.confirm = null; ui.openDoc = null; mutate(p.id, (pp) => { const k = findPk(pp, pk.id); k.docs = k.docs.filter((x) => x.id !== d.id); logTo(pp, 'Removed ' + d.name + ' from ' + k.name + '.', 'info'); }); } }; rerender(); }}>Remove document</button>` : nothing}
+        </div>
+      </div>
+    </div></div>`;
+}
+
+function EmailModal() {
+  if (!ui.email) return nothing;
+  const drafts = buildDrafts();
+  const e = ui.email; const p = projects.get(e.pid); const pk = p && findPk(p, e.pkId);
+  if (!pk) return nothing;
+  const title = { kickoff: 'Kick off ' + pk.name, request: 'Request missing documents', early: 'Request document', denial: 'Send denial', return: 'Send review comments' }[e.mode];
+  const sub = { kickoff: 'One email to each partner who owes a document in this packet. Edit before sending.', request: 'Drafted from the missing items in ' + pk.name + '. Edit before sending.', early: 'Edit before sending.', denial: 'Forwards the reviewer’s denial to the partner who prepared the document.', return: 'The document is now marked “Changes requested”. This email carries the open AI flags as comments.' }[e.mode];
+  return html`<div class="scrim" @click=${(ev) => { if (ev.target === ev.currentTarget) { ui.email = null; rerender(); } }}>
+    <div class="dialog" role="dialog" aria-modal="true" aria-label=${title}>
+      <div class="dhead"><div class="col" style="gap:2px"><h2 style="font-size:19px">${title}</h2><div class="small muted">${sub}</div></div>
+        <button class="iconbtn" aria-label="Close" @click=${() => { ui.email = null; rerender(); }}>${I.close}</button></div>
+      <div class="dbody">
+        ${drafts.length ? drafts.map((dr) => html`<div class="email">
+          <div class="meta"><span class="muted" style="font-weight:600">To</span><span style="font-weight:600">${dr.to}</span>
+            <span class="muted" style="font-weight:600">Cc</span><span>${dr.cc}</span>
+            <span class="muted" style="font-weight:600">Subject</span><span style="font-weight:600">${dr.subject}</span>
+            ${dr.attach ? html`<span class="muted" style="font-weight:600">Attach</span><span style="color:var(--accent);font-weight:600">${dr.attach}</span>` : nothing}</div>
+          <label class="field">Message<textarea id=${'em-' + dr.key.replace(/[^a-z0-9]/gi, '')} rows="12" .value=${dr.body} @input=${(ev) => { e.edits = e.edits || {}; e.edits[dr.key] = ev.target.value; }}></textarea></label>
+          <div class="row">
+            <button class="btn xs" @click=${() => copyText('To: ' + dr.to + '\nSubject: ' + dr.subject + '\n\n' + ((e.edits || {})[dr.key] ?? dr.body))}>Copy email</button>
+            ${dr.email ? html`<a class="btn xs" href=${'mailto:' + encodeURIComponent(dr.email) + '?subject=' + encodeURIComponent(dr.subject) + '&body=' + encodeURIComponent(((e.edits || {})[dr.key] ?? dr.body))}>Open in email app</a>` : nothing}
+          </div>
+        </div>`) : html`<p class="muted">There’s nothing to send for this packet right now.</p>`}
+        <div class="small muted">This demo doesn’t send email. Copy the text into your email, then mark it as sent to update the packet.</div>
+      </div>
+      <div class="dfoot"><button class="btn" @click=${() => { ui.email = null; rerender(); }}>Cancel</button>
+        <button class="btn primary" ?disabled=${!drafts.length} @click=${markSent}>${I.send} Mark ${drafts.length > 1 ? plural(drafts.length, 'email') : 'email'} as sent</button></div>
+    </div></div>`;
+}
+
+function SubmitModal() {
+  const s = ui.submit; if (!s) return nothing;
+  const p = projects.get(s.pid); const pk = p && findPk(p, s.pkId); if (!pk) return nothing;
+  const docs = pk.docs.filter((d) => d.status === 'ready');
+  const go = () => { ui.submit = null; mutate(p.id, (pp) => { const k = findPk(pp, pk.id); k.docs.forEach((d) => { if (d.status === 'ready') { d.status = 'submitted'; d.note = 'Submitted ' + day(); d.history = [{ at: stamp(), text: 'Submitted to ' + k.to }].concat(d.history || []); } }); k.submittedAt = stamp(); k.lastSent = 'Submitted to ' + k.to + ' · ' + stamp(); logTo(pp, 'Submitted ' + k.name + ' to ' + k.to + ' (' + plural(docs.length, 'document') + ').', 'ok'); }); toast('Submitted to ' + pk.to + '.'); };
+  return html`<div class="scrim"><div class="dialog narrow" role="dialog" aria-modal="true" aria-label="Submit packet">
+    <div class="dhead"><h2 style="font-size:19px">Submit ${pk.name} to ${pk.to}?</h2></div>
+    <div class="dbody"><div class="muted">These ${plural(docs.length, 'document')} will be marked as submitted. Already approved documents stay as they are.</div>
+      <div class="checks">${docs.map((d) => html`<div class="row" style="flex-wrap:nowrap">${I.file}<span>${d.name}</span></div>`)}</div></div>
+    <div class="dfoot"><button class="btn" @click=${() => { ui.submit = null; rerender(); }}>Cancel</button><button class="btn primary" @click=${go}>Submit packet</button></div>
+  </div></div>`;
+}
+
+function DecisionModal() {
+  const s = ui.decision; if (!s) return nothing;
+  const p = projects.get(s.pid); const pk = p && findPk(p, s.pkId); if (!pk) return nothing;
+  const subs = pk.docs.filter((d) => d.status === 'submitted');
+  const picked = subs.filter((d) => s.pick[d.id]);
+  const ok = s.outcome === 'approved' || (picked.length && s.reason.trim());
+  const go = async () => {
+    let letter = null;
+    if (s.outcome === 'approved' && s.letter) {
+      const f = s.letter; let type = TYPES[extOf(f.name)] || f.type; let assetId = '';
+      if (assets && type) { try { assetId = (await assets.upload(f, { type })).id; } catch (e) { toast('The letter didn’t upload. The decision is still recorded.'); } }
+      letter = { id: uid('d'), name: 'Approval letter', ref: 'Issued by ' + pk.to, owner: pk.to, status: 'approved', note: 'Received ' + day(), letter: true, history: [{ at: stamp(), text: 'Approval letter filed' }], file: type ? { assetId, name: f.name, type, size: f.size, at: stamp(), localOnly: !assetId } : null };
+      if (letter.file) fileCache.set(letter.id, f);
+    }
+    ui.decision = null;
+    mutate(p.id, (pp) => {
+      const k = findPk(pp, pk.id);
+      if (s.outcome === 'approved') {
+        k.docs.forEach((d) => { if (d.status === 'submitted') { d.status = 'approved'; d.note = 'Approved ' + day(); d.history = [{ at: stamp(), text: 'Approved by ' + k.to }].concat(d.history || []); } });
+        if (letter) k.docs.push(letter);
+        logTo(pp, k.to + ' approved ' + k.name + '.', 'ok');
+      } else {
+        k.docs.forEach((d) => { if (s.pick[d.id] && d.status === 'submitted') { d.status = 'denied'; d.note = 'Returned ' + day() + ': ' + s.reason.trim(); d.history = [{ at: stamp(), text: 'Denied by ' + k.to + ': ' + s.reason.trim() }].concat(d.history || []); } });
+        logTo(pp, k.to + ' returned ' + picked.map((d) => d.name).join(', ') + ': ' + s.reason.trim(), 'bad');
+      }
+    });
+  };
+  return html`<div class="scrim"><div class="dialog narrow" role="dialog" aria-modal="true" aria-label="Record decision">
+    <div class="dhead"><h2 style="font-size:19px">Decision from ${pk.to}</h2><button class="iconbtn" aria-label="Close" @click=${() => { ui.decision = null; rerender(); }}>${I.close}</button></div>
+    <div class="dbody">
+      <div class="row">
+        <button class=${'tpl' + (s.outcome === 'approved' ? ' on' : '')} @click=${() => { s.outcome = 'approved'; rerender(); }}>Approved</button>
+        <button class=${'tpl' + (s.outcome === 'returned' ? ' on' : '')} @click=${() => { s.outcome = 'returned'; rerender(); }}>Denied or returned</button>
+      </div>
+      ${s.outcome === 'approved' ? html`<div class="muted">All ${plural(subs.length, 'submitted document')} will be marked approved.</div>
+        <label class="field">Approval letter (optional)<input type="file" accept=".pdf,.png,.jpg,.jpeg,.txt" @change=${(e) => { s.letter = e.target.files[0] || null; }}></label>`
+      : html`<div class="field">Which documents were returned?<div class="checks">${subs.map((d) => html`<label><input type="checkbox" .checked=${!!s.pick[d.id]} @change=${(e) => { s.pick[d.id] = e.target.checked; rerender(); }}><span>${d.name}</span></label>`)}</div></div>
+        <label class="field">Reason given by ${pk.to}<input id="deny-reason" type="text" .value=${s.reason} @input=${(e) => { s.reason = e.target.value; rerender(); }} placeholder="e.g. structural calcs not stamped"></label>`}
+    </div>
+    <div class="dfoot"><button class="btn" @click=${() => { ui.decision = null; rerender(); }}>Cancel</button><button class="btn primary" ?disabled=${!ok} @click=${go}>Record decision</button></div>
+  </div></div>`;
+}
+
+function NewPacketModal() {
+  const n = ui.newPacket; if (!n) return nothing;
+  const p = projects.get(n.pid); if (!p) return nothing;
+  const tplNames = Object.keys(PACKET_TEMPLATES).concat(['Copy a packet']);
+  const preview = n.tpl === 'Copy a packet' ? ((findPk(p, n.copyFrom) || { docs: [] }).docs.map((d) => [d.name, d.ref, d.owner])) : PACKET_TEMPLATES[n.tpl];
+  const ok = n.name.trim() && n.to.trim();
+  const go = (e) => {
+    e.preventDefault(); if (!ok) return;
+    const id = uid('p');
+    mutate(p.id, (pp) => { pp.packets.push({ id, name: n.name.trim(), phase: n.phase, kind: 'Custom packet', to: n.to.trim(), owner: 'EQORE', custom: true, blurb: '', docs: preview.map((d) => ({ id: uid('d'), name: d[0], ref: d[1], owner: d[2], status: 'notdue', note: '—', custom: true, history: [] })) }); logTo(pp, 'Created custom packet ' + n.name.trim() + ' for ' + n.to.trim() + '.', 'info'); });
+    ui.sel[p.id] = id; if (ui.collapsed[p.id]) ui.collapsed[p.id][n.phase] = false; ui.newPacket = null;
+  };
+  return html`<div class="scrim"><form class="dialog narrow" role="dialog" aria-modal="true" aria-label="New custom packet" @submit=${go}>
+    <div class="dhead"><h2 style="font-size:19px">New custom packet</h2><button type="button" class="iconbtn" aria-label="Close" @click=${() => { ui.newPacket = null; rerender(); }}>${I.close}</button></div>
+    <div class="dbody">
+      <label class="field">Packet name<input id="np-name" type="text" .value=${n.name} @input=${(e) => { n.name = e.target.value; rerender(); }} placeholder="e.g. Incentive program application" required></label>
+      <label class="field">Submitted to<input id="np-to" type="text" .value=${n.to} @input=${(e) => { n.to = e.target.value; rerender(); }} placeholder="e.g. Utility program administrator" required></label>
+      <label class="field">Phase<select id="np-phase" .value=${n.phase} @change=${(e) => { n.phase = e.target.value; }}>${PHASES.map((ph) => html`<option ?selected=${ph === n.phase}>${ph}</option>`)}</select></label>
+      <div class="field">Start from<div class="row" style="gap:6px">${tplNames.map((t) => html`<button type="button" class=${'tpl' + (n.tpl === t ? ' on' : '')} @click=${() => { n.tpl = t; if (t === 'Copy a packet' && !n.copyFrom) n.copyFrom = p.packets[0] && p.packets[0].id; rerender(); }}>${t}</button>`)}</div></div>
+      ${n.tpl === 'Copy a packet' ? html`<label class="field">Copy documents from<select .value=${n.copyFrom} @change=${(e) => { n.copyFrom = e.target.value; rerender(); }}>${p.packets.map((x) => html`<option value=${x.id} ?selected=${x.id === n.copyFrom}>${x.name}</option>`)}</select></label>` : nothing}
+      <div class="small muted">${preview.length ? 'Starts with ' + plural(preview.length, 'document') + ': ' + preview.map((d) => d[0]).join(', ') + '.' : 'Starts empty. Add documents after creating it.'}</div>
+    </div>
+    <div class="dfoot"><button type="button" class="btn" @click=${() => { ui.newPacket = null; rerender(); }}>Cancel</button><button class="btn primary" type="submit" ?disabled=${!ok}>Create packet</button></div>
+  </form></div>`;
+}
+
+function NewProjectModal() {
+  const n = ui.newProject; if (!n) return nothing;
+  const ok = n.name.trim();
+  const go = (e) => {
+    e.preventDefault(); if (!ok) return;
+    const id = 'pj' + Math.random().toString(36).slice(2, 8);
+    const epc = n.epc.trim() || 'TBD';
+    const p = { id, name: n.name.trim(), address: n.address.trim(), size: n.size.trim(), epc, stage: 'Pre-planning', facts: '', createdAt: Date.now(), order: 50,
+      partners: [
+        { label: 'EQORE', name: 'EQORE', role: 'Owner', contact: 'EQORE Engineering', email: 'engineering@eqore.example' },
+        { label: 'Granite EPC', name: epc, role: 'EPC', contact: n.contact.trim() || 'Project lead', email: n.email.trim() },
+        { label: 'Engineer of record', name: 'Engineer of record', role: 'Engineer of record', contact: 'Engineer of record', email: '' },
+        { label: 'Customer', name: n.name.trim(), role: 'Facility', contact: 'Facilities team', email: '' },
+        { label: 'Utility', name: 'Utility', role: 'View only', contact: 'Interconnection desk', email: '' }],
+      packets: STANDARD_PACKETS.map((def) => ({ id: uid('p'), name: def[0], phase: def[1], kind: def[2], to: def[3], owner: def[4], blurb: def[5], docs: def[6].map((d) => ({ id: uid('d'), name: d[0], ref: d[1], owner: d[2], status: 'notdue', note: '—', history: [] })) })),
+      activity: [{ at: stamp(), text: 'Project created with the standard packet set.', tone: 'info' }] };
+    // The EPC slot keeps the "Granite EPC" owner label used by the packet templates; show the real company name in the partner list.
+    projects.set(id, p); ui.newProject = null;
+    store.save(p).catch(() => toast('Couldn’t save the new project. Try again.'));
+    location.hash = 'p-' + id;
+  };
+  const f = (k, label, ph, req) => html`<label class="field">${label}<input id=${'npj-' + k} type="text" .value=${n[k]} @input=${(e) => { n[k] = e.target.value; rerender(); }} placeholder=${ph} ?required=${req}></label>`;
+  return html`<div class="scrim"><form class="dialog narrow" role="dialog" aria-modal="true" aria-label="New project" @submit=${go}>
+    <div class="dhead"><h2 style="font-size:19px">New project</h2><button type="button" class="iconbtn" aria-label="Close" @click=${() => { ui.newProject = null; rerender(); }}>${I.close}</button></div>
+    <div class="dbody">
+      ${f('name', 'Project name', 'e.g. Somerville Ice Arena', true)}
+      ${f('address', 'Site address', 'Street, town, state')}
+      ${f('size', 'System size', 'e.g. 250 kW / 500 kWh')}
+      <div class="grid3">${f('epc', 'EPC company', 'e.g. Granite EPC')}${f('contact', 'EPC contact', 'Name')}${f('email', 'EPC email', 'name@company.com')}</div>
+      <div class="small muted">The project starts with the standard set of ${STANDARD_PACKETS.length} packets, from site assessment to operations. Kick off each packet when it’s time.</div>
+    </div>
+    <div class="dfoot"><button type="button" class="btn" @click=${() => { ui.newProject = null; rerender(); }}>Cancel</button><button class="btn primary" type="submit" ?disabled=${!ok}>Create project</button></div>
+  </form></div>`;
+}
+
+function InviteModal() {
+  const n = ui.invite; if (!n) return nothing;
+  const ok = n.name.trim() && n.role.trim();
+  const go = (e) => {
+    e.preventDefault(); if (!ok) return;
+    mutate(n.pid, (pp) => { pp.partners = (pp.partners || []).concat([{ label: n.name.trim(), name: n.name.trim(), role: n.role.trim(), contact: n.contact.trim() || n.name.trim(), email: n.email.trim() }]); logTo(pp, 'Added ' + n.name.trim() + ' (' + n.role.trim() + ') as a partner.', 'info'); });
+    ui.invite = null; toast(n.name.trim() + ' can now be assigned documents.');
+  };
+  const f = (k, label, ph, req) => html`<label class="field">${label}<input id=${'inv-' + k} type="text" .value=${n[k]} @input=${(e) => { n[k] = e.target.value; rerender(); }} placeholder=${ph} ?required=${req}></label>`;
+  return html`<div class="scrim"><form class="dialog narrow" role="dialog" aria-modal="true" aria-label="Invite partner" @submit=${go}>
+    <div class="dhead"><h2 style="font-size:19px">Invite partner</h2><button type="button" class="iconbtn" aria-label="Close" @click=${() => { ui.invite = null; rerender(); }}>${I.close}</button></div>
+    <div class="dbody">${f('name', 'Company', 'e.g. Northeast Fire Protection', true)}${f('role', 'Role', 'e.g. Fire protection engineer', true)}${f('contact', 'Contact name', 'Name')}${f('email', 'Email', 'name@company.com')}
+      <div class="small muted">They appear in the owner list on every document in this project. This demo doesn’t send an invitation email.</div></div>
+    <div class="dfoot"><button type="button" class="btn" @click=${() => { ui.invite = null; rerender(); }}>Cancel</button><button class="btn primary" type="submit" ?disabled=${!ok}>Add partner</button></div>
+  </form></div>`;
+}
+
+function ConfirmModal() {
+  const c = ui.confirm; if (!c) return nothing;
+  return html`<div class="scrim"><div class="dialog narrow" role="alertdialog" aria-modal="true" aria-label=${c.title}>
+    <div class="dhead"><h2 style="font-size:19px">${c.title}</h2></div>
+    <div class="dbody"><div class="muted">${c.text}</div></div>
+    <div class="dfoot"><button class="btn" @click=${() => { ui.confirm = null; rerender(); }}>Cancel</button><button class="btn danger" @click=${c.run}>${c.label}</button></div>
+  </div></div>`;
+}
+
+function Modals() { return html`${DocModal()}${EmailModal()}${SubmitModal()}${DecisionModal()}${NewPacketModal()}${NewProjectModal()}${InviteModal()}${ConfirmModal()}`; }
+
+document.getElementById('app').textContent = '';
+readRoute();
+boot();
+</script>
+</body></html>
