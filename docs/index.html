@@ -339,9 +339,9 @@ MIT Dome Building · 77 Massachusetts Avenue, Cambridge, MA · Prepared by Grani
 Equipment: 1 × Gotion EDGE760 battery enclosure, 2 × Dynapower MPS125 inverters and a 500 kVA isolation transformer on an exterior concrete pad across the private driveway from the main building.
 
 2. Emergency contacts
-Facility manager: [NAME] · [PHONE]
-EQORE 24/7 monitoring: [PHONE]
-Granite EPC on-call: [PHONE]
+Facility manager: MIT Dome Building facilities desk · (617) 555-0142
+EQORE 24/7 monitoring: (617) 555-0199
+Granite EPC on-call: (617) 555-0123
 Fire department: 911
 
 3. Emergency shutdown
@@ -403,7 +403,7 @@ function buildSeed() {
       packet(std('Site assessment & design'), [A('Aug 12'), A('Aug 12'), A('Aug 15'), A('Aug 22'), A('Aug 29'), A('Sep 5'), ['approved', 'Sep 28', 'Stamped, Rev B']], { closed: true, blurb: 'Closed Sep 28 when the plan set was stamped. Kept here for reference.' }),
       packet(std('Building & electrical permit'), [A('v1 · Oct 2'), A('v1 · Oct 2'), ['approved', 'Rev B · Jan 12', 'All sheets'], A('v2 · Sep 28'), A('v1 · Sep 28'), A('v1 · Sep 28'), A('Sep 20'), A('Sep 20'), A('Exp. 2027'), A('Exp. Jun 2027'), A('Sep 18')], { blurb: 'Approved on first submission. Approval letter and stamped set are filed here.' }),
       packet(std('Fire marshal (NFPA 855)'), [R('Reviewed by EQORE · Oct 20'), R('Rev B'), R('Rev B'), R('Sep 20'), R('Sep 20'), R('Rev B'), R('Oct 21'), R('Reviewed Oct 22'), R('v2 · reviewed Nov 2'),
-        ['action', 'Uploaded today 9:40 AM · AI found 4 issues'], ['missing', 'Requested Nov 4']],
+        ['action', 'Uploaded today 9:40 AM · AI found 3 issues'], ['missing', 'Requested Nov 4']],
         { blurb: 'Granite EPC tried to submit yesterday at 4:12 PM. The Vault held it until every document is in and reviewed.' }),
       packet(std('Utility interconnection'), [A('Aug 30'), ['approved', 'Rev B'], ['approved', 'Rev B'], A('Aug 30'), A('Sep 4'), ['denied', 'Returned Oct 20: export limit · replaced by v2', 'Settings file v1'], A('Oct 9'), A('Oct 11'), ['notdue', 'Not yet scheduled'], ['notdue', '—']],
         { blurb: 'The witness test and permission to operate come after the town signs off on the final inspection.' }),
@@ -433,15 +433,14 @@ function buildSeed() {
     at: 'Today 9:41 AM', model: 'demo',
     summary: 'Checked against the fire marshal’s emergency planning expectations for battery systems, plan set Rev B, and the other documents in this packet. Found issues the fire marshal is likely to send back.',
     flags: [
-      { n: 1, severity: 'high', title: 'Emergency contacts are blank', ref: 'Section 2', quote: '[PHONE]', detail: 'All three contacts are placeholders. A plan without working 24/7 phone numbers is likely to be returned by the fire marshal.' },
-      { n: 2, severity: 'high', title: 'Breaker rating doesn’t match the plan set', ref: 'Section 3 · ESS-4.1', quote: '600 A battery system breaker', detail: 'This plan says 600 A. ESS-4.1 and ESS-6.2 specify a 400 A breaker, while ESS-13.0 says 600 A. Confirm with the engineer of record so the plan set and this document agree.' },
-      { n: 3, severity: 'medium', title: 'Fire suppression description is incomplete', ref: 'Section 4 · ESS-13.0', quote: 'integrated aerosol fire suppression', detail: 'Lists aerosol suppression only. ESS-13.0 lists aerosol, a dry pipe sprinkler system and pack immersion. Responders will need to know where the dry pipe connection is.' },
-      { n: 4, severity: 'medium', title: 'Site map is referenced but not attached', ref: 'Section 6 · ESS-1.0', quote: 'See attached site map', detail: 'No attachment was uploaded. Attach the ESS-1.0 site plan with both disconnects and the fire department access path marked.' }
+      { n: 1, severity: 'high', title: 'Breaker rating doesn’t match the plan set', ref: 'Section 3 · ESS-4.1', quote: '600 A battery system breaker', detail: 'This plan says 600 A. ESS-4.1 and ESS-6.2 specify a 400 A breaker, while ESS-13.0 says 600 A. Confirm with the engineer of record so the plan set and this document agree.' },
+      { n: 2, severity: 'medium', title: 'Fire suppression description is incomplete', ref: 'Section 4 · ESS-13.0', quote: 'integrated aerosol fire suppression', detail: 'Lists aerosol suppression only. ESS-13.0 lists aerosol, a dry pipe sprinkler system and pack immersion. Responders will need to know where the dry pipe connection is.' },
+      { n: 3, severity: 'medium', title: 'Site map is referenced but not attached', ref: 'Section 6 · ESS-1.0', quote: 'See attached site map', detail: 'No attachment was uploaded. Attach the ESS-1.0 site plan with both disconnects and the fire department access path marked.' }
     ],
     passed: ['System size, chemistry and equipment match the plan set (ESS-13.0)', 'Primary disconnect location matches ESS-13.0', 'Fire department access plan is already in this packet']
   };
   mit.activity = [
-    { at: 'Today 9:41 AM', text: 'AI pre-review of Emergency response plan: 2 high and 2 medium issues flagged for EQORE review.', tone: 'warn' },
+    { at: 'Today 9:41 AM', text: 'AI pre-review of Emergency response plan: 1 high and 2 medium issues flagged for EQORE review.', tone: 'warn' },
     { at: 'Today 9:40 AM', text: 'Granite EPC uploaded Emergency response plan to Fire marshal (NFPA 855).', tone: 'info' },
     { at: 'Yesterday 4:12 PM', text: 'Submission to Town Fire Prevention blocked: Emergency response plan and Hazard mitigation analysis not ready.', tone: 'bad' },
     { at: 'Nov 6', text: 'Trench depth photos reviewed and marked ready after re-dig to 26 in (ESS-5.0 requires 24 in).', tone: 'ok' },
@@ -519,6 +518,8 @@ const I = {
   send: html`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>`,
   spark: html`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"></path><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"></path></svg>`,
   upload: html`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>`,
+  download: html`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
+  box: html`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M21 8v13H3V8"></path><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>`,
   clock: html`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>`
 };
 
@@ -568,13 +569,13 @@ function projectSummary(p) {
 }
 
 // ---------- Platform: storage, files, Claude ----------
-let db = null, assets = null, sample = null, userCap = null, mode = 'loading', myName = '';
+let db = null, assets = null, sample = null, userCap = null, downloads = null, mode = 'loading', myName = '';
 const projects = new Map();
 const textCache = new Map();
 const fileCache = new Map(); // docId -> Blob (this visit)
 let seeding = false;
 
-const LS_KEY = 'eqore-vault-demo-v1';
+const LS_KEY = 'eqore-vault-demo-v2';
 const local = {
   data: null,
   load() { try { this.data = JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch (e) { this.data = null; } if (!this.data) this.data = { projects: {}, texts: {} }; },
@@ -618,7 +619,7 @@ async function seedDemo() {
 async function boot() {
   const C = window.claude;
   const use = (n) => C && C.use ? C.use(n).catch(() => null) : Promise.resolve(null);
-  [db, assets, sample, userCap] = await Promise.all([use('db'), use('assets'), use('sample'), use('user')]);
+  [db, assets, sample, userCap, downloads] = await Promise.all([use('db'), use('assets'), use('sample'), use('user'), use('downloads')]);
   if (userCap) { try { const me = await userCap.me(); myName = (me && me.name) || ''; } catch (e) { /* name unknown */ } }
   if (db) {
     mode = 'shared';
@@ -653,7 +654,7 @@ function readRoute() { ui.route = (location.hash || '').replace(/^#/, ''); ui.op
 window.addEventListener('hashchange', readRoute);
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  if (ui.confirm) ui.confirm = null; else if (ui.email) ui.email = null; else if (ui.submit) ui.submit = null; else if (ui.decision) ui.decision = null;
+  if (ui.confirm) ui.confirm = null; else if (ui.zip && !ui.zip.busy) ui.zip = null; else if (ui.email) ui.email = null; else if (ui.submit) ui.submit = null; else if (ui.decision) ui.decision = null;
   else if (ui.openDoc) ui.openDoc = null; else if (ui.newPacket) ui.newPacket = null; else if (ui.newProject) ui.newProject = null; else if (ui.invite) ui.invite = null; else return;
   rerender();
 });
@@ -918,6 +919,123 @@ function markSent() {
   ui.email = null; toast('Marked as sent and logged on the project.');
 }
 
+// ---------- Compile packet (.zip) ----------
+const JSZIP_URL = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+const JSPDF_URL = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+const pad2 = (n) => (n < 10 ? '0' : '') + n;
+const slug = (s) => s.replace(/&/g, 'and').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const isoDay = (d = new Date()) => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+function zipInfo(p, pk, info) {
+  const c = info.c;
+  const remaining = c.missing + c.action + c.changes + c.denied + c.notdue;
+  const docs = pk.docs.filter((d) => ['ready', 'submitted', 'approved'].includes(d.status));
+  const ready = remaining === 0 && docs.length > 0;
+  const isAhj = /AHJ/.test(pk.kind) || /^Town/.test(pk.to);
+  const label = info.gate === 'complete' ? 'Compile records (.zip)' : isAhj ? 'Compile for AHJ (.zip)' : pk.to === 'Utility' ? 'Compile for utility (.zip)' : 'Compile packet (.zip)';
+  const hint = ready ? plural(docs.length, 'document') + ' + cover letter & index' : docs.length + remaining === 0 ? 'Add documents first' : 'Available once every document is in · ' + remaining + ' to go';
+  const files = [{ name: '00_Cover-letter-and-document-index.pdf', cover: true }].concat(docs.map((d, i) => {
+    const real = d.file && !d.file.textOnly;
+    return { name: pad2(i + 1) + '_' + slug(d.name) + (real ? '.' + extOf(d.file.name) : '.pdf'), doc: d, sample: !d.file };
+  }));
+  const sub = info.gate === 'approved' ? pk.name + ' · copy of what ' + pk.to + ' approved' : info.gate === 'complete' ? pk.name + ' · all records' : pk.name + ' · ready to send to ' + pk.to;
+  return { ready, label, hint, files, docs, sub, fileName: slug(p.name) + '_' + slug(pk.name) + '_' + isoDay() + '.zip' };
+}
+function pdfWriter(jsPDF) {
+  const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+  const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 60;
+  let y = M;
+  const write = (text, size = 11, style = 'normal', gap = 6, indent = 0) => {
+    doc.setFont('helvetica', style); doc.setFontSize(size);
+    doc.splitTextToSize(String(text), W - 2 * M - indent).forEach((line) => {
+      if (y + size > H - M) { doc.addPage(); y = M; }
+      doc.text(line, M + indent, y + size); y += size * 1.35;
+    });
+    y += gap;
+  };
+  const rule = () => { doc.setDrawColor(180); doc.line(M, y, W - M, y); y += 12; };
+  return { doc, write, rule };
+}
+function coverPdf(jsPDF, p, pk, z) {
+  const { doc, write, rule } = pdfWriter(jsPDF);
+  write('EQORE', 18, 'bold', 0); write('Project Management', 10, 'normal', 10); rule();
+  write(day() + ', ' + new Date().getFullYear(), 11, 'normal', 12);
+  write('To: ' + pk.to, 11, 'normal', 2);
+  write('Re: ' + pk.name + ' · ' + p.name + (p.address ? ', ' + p.address : ''), 11, 'bold', 12);
+  write('Please find enclosed the ' + pk.name + ' documents for ' + p.name + (p.size ? ', a ' + p.size + ' battery energy storage system' : '') + '. Each document was reviewed by EQORE before submission. The documents are numbered in the order listed below.', 11, 'normal', 10);
+  write('Questions about this submission can go to EQORE Project Management at pm@eqore.example.', 11, 'normal', 14);
+  write('Document index', 13, 'bold', 6); rule();
+  z.files.slice(1).forEach((f, i) => {
+    write(pad2(i + 1) + '   ' + f.doc.name, 11, 'bold', 0);
+    write([f.doc.ref, 'Prepared by ' + f.doc.owner, DS[f.doc.status], f.name].filter(Boolean).join('  ·  '), 9, 'normal', 6, 22);
+  });
+  write('', 11, 'normal', 10);
+  write('EQORE Project Management', 11, 'normal', 0);
+  return doc;
+}
+function docPdf(jsPDF, p, pk, d, text) {
+  const { doc, write, rule } = pdfWriter(jsPDF);
+  write(d.name, 16, 'bold', 2); write(d.ref + ' · Prepared by ' + d.owner + ' · ' + p.name, 10, 'normal', 6); rule();
+  if (text) text.split('\n').forEach((ln) => write(ln || ' ', 11, 'normal', 0));
+  else write('Sample page. In EQORE Vault this is the file ' + d.owner + ' uploaded for this document. This demo project has no upload for it, so this page stands in.', 11, 'italic', 0);
+  return doc;
+}
+async function compileZip() {
+  const z0 = ui.zip; const p = projects.get(z0.pid); const pk = p && findPk(p, z0.pkId); if (!pk) return;
+  const z = zipInfo(p, pk, packetInfo(pk));
+  z0.busy = true; z0.error = ''; z0.done = ''; rerender();
+  try {
+    await Promise.all([loadScript(JSZIP_URL), loadScript(JSPDF_URL)]);
+    const jsPDF = window.jspdf.jsPDF; const zip = new window.JSZip();
+    zip.file(z.files[0].name, coverPdf(jsPDF, p, pk, z).output('blob'));
+    for (const f of z.files.slice(1)) {
+      let blob = null, name = f.name;
+      if (f.doc.file && !f.doc.file.textOnly) blob = await getBlob(f.doc);
+      if (!blob) {
+        const t = f.doc.hasText ? await store.getText(f.doc.id).catch(() => '') : '';
+        blob = docPdf(jsPDF, p, pk, f.doc, t).output('blob'); name = name.replace(/\.[^.]+$/, '.pdf');
+      }
+      zip.file(name, blob);
+    }
+    const out = await zip.generateAsync({ type: 'blob' });
+    if (downloads) {
+      try { await downloads.save({ filename: z.fileName, data: out }); z0.done = 'Saved ' + z.fileName; }
+      catch (e) { z0.error = e && e.code === 'declined' ? 'Download canceled.' : e && e.code === 'rate_limited' ? 'A download prompt is already open.' : 'Downloading isn’t available here.'; }
+    } else if (window.claude) {
+      z0.error = 'Downloading isn’t available in this view.';
+    } else {
+      const a = document.createElement('a'); a.href = URL.createObjectURL(out); a.download = z.fileName;
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+      z0.done = 'Downloaded ' + z.fileName;
+    }
+    if (z0.done) mutate(p.id, (pp) => logTo(pp, 'Compiled ' + pk.name + ' for ' + pk.to + ' (' + plural(z.files.length, 'file') + ').', 'ok'));
+  } catch (e) { z0.error = 'The packet couldn’t be compiled. Check your connection and try again.'; }
+  z0.busy = false; rerender();
+}
+
+function ZipModal() {
+  const z0 = ui.zip; if (!z0) return nothing;
+  const p = projects.get(z0.pid); const pk = p && findPk(p, z0.pkId); if (!pk) return nothing;
+  const z = zipInfo(p, pk, packetInfo(pk));
+  const close = () => { if (!z0.busy) { ui.zip = null; rerender(); } };
+  return html`<div class="scrim" @click=${(e) => { if (e.target === e.currentTarget) close(); }}><div class="dialog" role="dialog" aria-modal="true" aria-label="Compiled submission packet">
+    <div class="dhead"><div class="col" style="gap:2px"><h2 style="font-size:19px">Packet compiled</h2><div class="small muted">${z.sub}</div></div>
+      <button class="iconbtn" aria-label="Close" @click=${close}>${I.close}</button></div>
+    <div class="dbody">
+      <div class="row" style="flex-wrap:nowrap;gap:12px;padding:12px 14px;border-radius:10px;background:var(--accent-soft);border:1px solid var(--accent-line)">
+        ${I.box}<div class="col" style="gap:2px;min-width:0"><strong style="overflow-wrap:anywhere">${z.fileName}</strong><span class="small muted">${plural(z.files.length, 'file')} · organized in the order ${pk.to} expects</span></div></div>
+      <div class="col" style="gap:3px;max-height:320px;overflow-y:auto;border:1px solid var(--line);border-radius:10px;padding:8px">
+        ${z.files.map((f) => html`<div class="row" style="flex-wrap:nowrap;min-height:30px;padding:2px 6px;font-size:13px">${I.file}<span style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;overflow-wrap:anywhere;flex:1">${f.name}</span>${f.cover ? html`<span class="small muted">generated</span>` : f.sample ? html`<span class="small muted">sample page</span>` : nothing}</div>`)}
+      </div>
+      ${z.files.some((f) => f.sample) ? html`<div class="small muted">Documents marked “sample page” have no upload in this demo project, so a labeled stand-in page is included.</div>` : nothing}
+      ${z0.busy ? html`<div class="thinking"><span class="spin"></span>Building the .zip…</div>` : nothing}
+      ${z0.done ? html`<div class="sentmsg">${I.check} ${z0.done}</div>` : nothing}
+      ${z0.error ? html`<div class="banner">${z0.error}</div>` : nothing}
+    </div>
+    <div class="dfoot"><button class="btn" ?disabled=${z0.busy} @click=${close}>Close</button>
+      <button class="btn primary" ?disabled=${z0.busy || !z.ready} @click=${compileZip}>${I.download} Download .zip</button></div>
+  </div></div>`;
+}
+
 // ---------- Views ----------
 function App() {
   const p = ui.route.startsWith('p-') ? projects.get(ui.route.slice(2)) : null;
@@ -1103,12 +1221,19 @@ function PacketDetail(p, pk, info) {
     empty: 'Use “Add required document” below to list what ' + pk.to + ' needs.'
   }[info.gate] || pk.blurb || '';
   const canSubmit = info.gate === 'ready';
+  const zi = zipInfo(p, pk, info);
   return html`<section class="card" style="padding:22px">
     <div class="head" style="align-items:flex-start">
       <div class="col" style="gap:4px;min-width:0"><div class="eyebrow">${pk.phase} · ${pk.kind}</div><h2 style="font-size:22px">${pk.name}</h2>
         <div class="muted">Submitted to: ${pk.to} · Responsible: ${pk.owner}</div>
         ${pk.blurb ? html`<div class="small muted">${pk.blurb}</div>` : nothing}</div>
-      <span class=${'pill lg tone-' + info.tone}>${info.status}</span>
+      <div class="col" style="align-items:flex-end;gap:8px">
+        <div class="row" style="justify-content:flex-end">
+          <span class=${'pill lg tone-' + info.tone}>${info.status}</span>
+          <button class=${'btn' + (zi.ready ? ' primary' : '')} ?disabled=${!zi.ready} @click=${() => { ui.zip = { pid: p.id, pkId: pk.id }; rerender(); }}>${I.download} ${zi.label}</button>
+        </div>
+        <span class="small muted" style="text-align:right">${zi.hint}</span>
+      </div>
     </div>
     <div class=${'gate ' + G[1]}>
       <div class="row" style="align-items:flex-start;flex-wrap:nowrap">${info.gate === 'blocked' ? html`<span style="margin-top:2px">${I.lock}</span>` : nothing}
@@ -1469,7 +1594,7 @@ function ConfirmModal() {
   </div></div>`;
 }
 
-function Modals() { return html`${DocModal()}${EmailModal()}${SubmitModal()}${DecisionModal()}${NewPacketModal()}${NewProjectModal()}${InviteModal()}${ConfirmModal()}`; }
+function Modals() { return html`${DocModal()}${ZipModal()}${EmailModal()}${SubmitModal()}${DecisionModal()}${NewPacketModal()}${NewProjectModal()}${InviteModal()}${ConfirmModal()}`; }
 
 document.getElementById('app').textContent = '';
 readRoute();

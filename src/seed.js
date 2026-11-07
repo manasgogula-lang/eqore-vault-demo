@@ -106,9 +106,9 @@ MIT Dome Building · 77 Massachusetts Avenue, Cambridge, MA · Prepared by Grani
 Equipment: 1 × Gotion EDGE760 battery enclosure, 2 × Dynapower MPS125 inverters and a 500 kVA isolation transformer on an exterior concrete pad across the private driveway from the main building.
 
 2. Emergency contacts
-Facility manager: [NAME] · [PHONE]
-EQORE 24/7 monitoring: [PHONE]
-Granite EPC on-call: [PHONE]
+Facility manager: MIT Dome Building facilities desk · (617) 555-0142
+EQORE 24/7 monitoring: (617) 555-0199
+Granite EPC on-call: (617) 555-0123
 Fire department: 911
 
 3. Emergency shutdown
@@ -170,7 +170,7 @@ function buildSeed() {
       packet(std('Site assessment & design'), [A('Aug 12'), A('Aug 12'), A('Aug 15'), A('Aug 22'), A('Aug 29'), A('Sep 5'), ['approved', 'Sep 28', 'Stamped, Rev B']], { closed: true, blurb: 'Closed Sep 28 when the plan set was stamped. Kept here for reference.' }),
       packet(std('Building & electrical permit'), [A('v1 · Oct 2'), A('v1 · Oct 2'), ['approved', 'Rev B · Jan 12', 'All sheets'], A('v2 · Sep 28'), A('v1 · Sep 28'), A('v1 · Sep 28'), A('Sep 20'), A('Sep 20'), A('Exp. 2027'), A('Exp. Jun 2027'), A('Sep 18')], { blurb: 'Approved on first submission. Approval letter and stamped set are filed here.' }),
       packet(std('Fire marshal (NFPA 855)'), [R('Reviewed by EQORE · Oct 20'), R('Rev B'), R('Rev B'), R('Sep 20'), R('Sep 20'), R('Rev B'), R('Oct 21'), R('Reviewed Oct 22'), R('v2 · reviewed Nov 2'),
-        ['action', 'Uploaded today 9:40 AM · AI found 4 issues'], ['missing', 'Requested Nov 4']],
+        ['action', 'Uploaded today 9:40 AM · AI found 3 issues'], ['missing', 'Requested Nov 4']],
         { blurb: 'Granite EPC tried to submit yesterday at 4:12 PM. The Vault held it until every document is in and reviewed.' }),
       packet(std('Utility interconnection'), [A('Aug 30'), ['approved', 'Rev B'], ['approved', 'Rev B'], A('Aug 30'), A('Sep 4'), ['denied', 'Returned Oct 20: export limit · replaced by v2', 'Settings file v1'], A('Oct 9'), A('Oct 11'), ['notdue', 'Not yet scheduled'], ['notdue', '—']],
         { blurb: 'The witness test and permission to operate come after the town signs off on the final inspection.' }),
@@ -200,15 +200,14 @@ function buildSeed() {
     at: 'Today 9:41 AM', model: 'demo',
     summary: 'Checked against the fire marshal’s emergency planning expectations for battery systems, plan set Rev B, and the other documents in this packet. Found issues the fire marshal is likely to send back.',
     flags: [
-      { n: 1, severity: 'high', title: 'Emergency contacts are blank', ref: 'Section 2', quote: '[PHONE]', detail: 'All three contacts are placeholders. A plan without working 24/7 phone numbers is likely to be returned by the fire marshal.' },
-      { n: 2, severity: 'high', title: 'Breaker rating doesn’t match the plan set', ref: 'Section 3 · ESS-4.1', quote: '600 A battery system breaker', detail: 'This plan says 600 A. ESS-4.1 and ESS-6.2 specify a 400 A breaker, while ESS-13.0 says 600 A. Confirm with the engineer of record so the plan set and this document agree.' },
-      { n: 3, severity: 'medium', title: 'Fire suppression description is incomplete', ref: 'Section 4 · ESS-13.0', quote: 'integrated aerosol fire suppression', detail: 'Lists aerosol suppression only. ESS-13.0 lists aerosol, a dry pipe sprinkler system and pack immersion. Responders will need to know where the dry pipe connection is.' },
-      { n: 4, severity: 'medium', title: 'Site map is referenced but not attached', ref: 'Section 6 · ESS-1.0', quote: 'See attached site map', detail: 'No attachment was uploaded. Attach the ESS-1.0 site plan with both disconnects and the fire department access path marked.' }
+      { n: 1, severity: 'high', title: 'Breaker rating doesn’t match the plan set', ref: 'Section 3 · ESS-4.1', quote: '600 A battery system breaker', detail: 'This plan says 600 A. ESS-4.1 and ESS-6.2 specify a 400 A breaker, while ESS-13.0 says 600 A. Confirm with the engineer of record so the plan set and this document agree.' },
+      { n: 2, severity: 'medium', title: 'Fire suppression description is incomplete', ref: 'Section 4 · ESS-13.0', quote: 'integrated aerosol fire suppression', detail: 'Lists aerosol suppression only. ESS-13.0 lists aerosol, a dry pipe sprinkler system and pack immersion. Responders will need to know where the dry pipe connection is.' },
+      { n: 3, severity: 'medium', title: 'Site map is referenced but not attached', ref: 'Section 6 · ESS-1.0', quote: 'See attached site map', detail: 'No attachment was uploaded. Attach the ESS-1.0 site plan with both disconnects and the fire department access path marked.' }
     ],
     passed: ['System size, chemistry and equipment match the plan set (ESS-13.0)', 'Primary disconnect location matches ESS-13.0', 'Fire department access plan is already in this packet']
   };
   mit.activity = [
-    { at: 'Today 9:41 AM', text: 'AI pre-review of Emergency response plan: 2 high and 2 medium issues flagged for EQORE review.', tone: 'warn' },
+    { at: 'Today 9:41 AM', text: 'AI pre-review of Emergency response plan: 1 high and 2 medium issues flagged for EQORE review.', tone: 'warn' },
     { at: 'Today 9:40 AM', text: 'Granite EPC uploaded Emergency response plan to Fire marshal (NFPA 855).', tone: 'info' },
     { at: 'Yesterday 4:12 PM', text: 'Submission to Town Fire Prevention blocked: Emergency response plan and Hazard mitigation analysis not ready.', tone: 'bad' },
     { at: 'Nov 6', text: 'Trench depth photos reviewed and marked ready after re-dig to 26 in (ESS-5.0 requires 24 in).', tone: 'ok' },
